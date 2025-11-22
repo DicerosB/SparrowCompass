@@ -51,6 +51,8 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void USB_CDC_RxHandler(uint8_t*, uint32_t);
+
 
 /* USER CODE BEGIN EFP */
 

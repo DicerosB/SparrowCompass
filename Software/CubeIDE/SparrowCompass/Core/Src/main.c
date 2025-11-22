@@ -19,6 +19,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -32,7 +35,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define PROJECT_VERSION "0.0.1"
+#define PROJECT_AUTHOR "M. Petzoldt"
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,7 +46,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
+uint8_t hello_world_message[] =
+		"~~~~~ Sparrow Compass ~~~~~~~\n Project Version: "
+		PROJECT_VERSION "\n Author:" PROJECT_AUTHOR
+		"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+uint16_t loopcounter = 0;
+uint8_t printf_usb_buffer[1024] = {0};
+uint8_t *printf_usb_buffer_wpointer = (uint8_t *)&printf_usb_buffer;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -84,7 +94,10 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  // printf routing
+//  int _write(int file, char *ptr, int len) {
+//      CDC_Transmit_FS((uint8_t*) ptr, len); return len;
+//  }
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -92,20 +105,23 @@ int main(void)
   MX_I2C1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  CDC_Transmit_FS(hello_world_message, sizeof(hello_world_message));
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
 	  HAL_Delay(1000);
+	  printf("%d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(1000);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  loopcounter++;
   }
   /* USER CODE END 3 */
 }
@@ -220,7 +236,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
+{
+    CDC_Transmit_FS(Buf, Len);
+}
 
+int __io_putchar(int ch)
+{
+	*printf_usb_buffer_wpointer = ch;
+	printf_usb_buffer_wpointer++;
+	uint16_t buffer_length = printf_usb_buffer_wpointer-printf_usb_buffer;
+	if((buffer_length>1023)|| ch == '\n'){
+		while(!(CDC_Transmit_FS(printf_usb_buffer, buffer_length) == USBD_BUSY));
+		printf_usb_buffer_wpointer = printf_usb_buffer;
+	}
+
+
+  return ch;
+}
 /* USER CODE END 4 */
 
 /**
@@ -234,6 +267,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
   }
   /* USER CODE END Error_Handler_Debug */
 }

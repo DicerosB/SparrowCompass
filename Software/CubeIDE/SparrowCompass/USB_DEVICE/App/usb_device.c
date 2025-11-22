@@ -64,7 +64,26 @@ USBD_HandleTypeDef hUsbDeviceFS;
 void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
+	/* Rendering hardware reset harmless (no need to replug USB cable): */
+	  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+	  /* GPIO Ports Clock Enable */
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+
+	  /*Configure GPIO pin : PA12, a.k.a. USB_DP */
+	  GPIO_InitStruct.Pin = GPIO_PIN_12;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	  HAL_Delay(10);
+	  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	  /* Hardware reset rendered harmless! */
   /* USER CODE END USB_DEVICE_Init_PreTreatment */
 
   /* Init Device Library, add supported class and start the library. */
