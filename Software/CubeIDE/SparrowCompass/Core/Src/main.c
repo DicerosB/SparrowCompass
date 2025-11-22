@@ -37,6 +37,7 @@
 /* USER CODE BEGIN PD */
 #define PROJECT_VERSION "0.0.1"
 #define PROJECT_AUTHOR "M. Petzoldt"
+#define DFU_BOOT_FLAG 0xDEADBEEF
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,9 +47,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+
+extern int _bflag;
+uint32_t *dfu_boot_flag;
+
 uint8_t hello_world_message[] =
-		"~~~~~ Sparrow Compass ~~~~~~~\n Project Version: "
-		PROJECT_VERSION "\n Author:" PROJECT_AUTHOR
+		"\n~~~~~ Sparrow Compass ~~~~~~~\n Project Version: "
+		PROJECT_VERSION "\n Author: " PROJECT_AUTHOR
 		"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 uint16_t loopcounter = 0;
 uint8_t printf_usb_buffer[1024] = {0};
@@ -105,7 +110,8 @@ int main(void)
   MX_I2C1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  CDC_Transmit_FS(hello_world_message, sizeof(hello_world_message));
+  HAL_Delay(1000);
+  CDC_Transmit_FS(hello_world_message, sizeof(hello_world_message)-1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -236,9 +242,21 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void switch_to_bootloader(){
+	printf("now entering bootloader ..\n");
+	dfu_boot_flag = (uint32_t*)(&_bflag);
+	*dfu_boot_flag = DFU_BOOT_FLAG;
+	HAL_NVIC_SystemReset();
+}
+
 void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 {
-    CDC_Transmit_FS(Buf, Len);
+	if(Len == 10 && strcmp(Buf, "deadbeef")){
+		switch_to_bootloader();
+	}else{
+		CDC_Transmit_FS(Buf, Len);
+	}
+
 }
 
 int __io_putchar(int ch)

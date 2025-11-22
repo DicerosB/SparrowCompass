@@ -36,7 +36,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_bflag = ORIGIN(RAM) + LENGTH(RAM) - 4; /* end of "RAM" Ram type memory */
+_bflag = ORIGIN(RAM) + LENGTH(RAM) - 8; /* end of "RAM" Ram type memory */
 _estack = _bflag;
 
 _Min_Heap_Size = 0x200; /* required amount of heap */
