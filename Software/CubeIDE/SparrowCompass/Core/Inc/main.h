@@ -51,9 +51,9 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void USB_CDC_RxHandler(uint8_t*, uint32_t);
-
-
+void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len);
+void switch_to_bootloader();
+int __io_putchar(int ch);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
@@ -61,6 +61,28 @@ void USB_CDC_RxHandler(uint8_t*, uint32_t);
 /* Private defines -----------------------------------------------------------*/
 #define DEBUG_LED_Pin GPIO_PIN_13
 #define DEBUG_LED_GPIO_Port GPIOC
+#define GPS_nReset_Pin GPIO_PIN_0
+#define GPS_nReset_GPIO_Port GPIOA
+#define GPS_INT_Pin GPIO_PIN_1
+#define GPS_INT_GPIO_Port GPIOA
+#define MAG_DRDY_Pin GPIO_PIN_2
+#define MAG_DRDY_GPIO_Port GPIOA
+#define MAG_INT1_Pin GPIO_PIN_3
+#define MAG_INT1_GPIO_Port GPIOA
+#define GYR_DRDY_Pin GPIO_PIN_4
+#define GYR_DRDY_GPIO_Port GPIOA
+#define MOT_nEnable_Pin GPIO_PIN_11
+#define MOT_nEnable_GPIO_Port GPIOB
+#define MOT_STEP_Pin GPIO_PIN_12
+#define MOT_STEP_GPIO_Port GPIOB
+#define MOT_DIR_Pin GPIO_PIN_13
+#define MOT_DIR_GPIO_Port GPIOB
+#define MOT_SENS_B_Pin GPIO_PIN_14
+#define MOT_SENS_B_GPIO_Port GPIOB
+#define MOT_SENS_B_EXTI_IRQn EXTI15_10_IRQn
+#define MOT_SENS_A_Pin GPIO_PIN_15
+#define MOT_SENS_A_GPIO_Port GPIOB
+#define MOT_SENS_A_EXTI_IRQn EXTI15_10_IRQn
 
 /* USER CODE BEGIN Private defines */
 

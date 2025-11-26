@@ -17,14 +17,15 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <MotorDriver.h>
 #include "main.h"
 #include "usb_device.h"
-#include "usbd_cdc_if.h"
-#include <stdio.h>
 
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usbd_cdc_if.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -48,18 +49,16 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
+/* USER CODE BEGIN PV */
 extern int _bflag;
 uint32_t *dfu_boot_flag;
-
 uint8_t hello_world_message[] =
-		"\n~~~~~ Sparrow Compass ~~~~~~~\n Project Version: "
-		PROJECT_VERSION "\n Author: " PROJECT_AUTHOR
-		"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+               "\n~~~~~ Sparrow Compass ~~~~~~~\n Project Version: "
+               PROJECT_VERSION "\n Author: " PROJECT_AUTHOR
+               "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 uint16_t loopcounter = 0;
 uint8_t printf_usb_buffer[1024] = {0};
 uint8_t *printf_usb_buffer_wpointer = (uint8_t *)&printf_usb_buffer;
-/* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,16 +112,18 @@ int main(void)
   HAL_Delay(1000);
   CDC_Transmit_FS(hello_world_message, sizeof(hello_world_message)-1);
   /* USER CODE END 2 */
-
+  MotorDriver *motor_driver;
+  motor_driver = new(MotorDriver);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
   while (1)
   {
-	  HAL_Delay(1000);
+	  HAL_Delay(2000);
 	  printf("%d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(1000);
+	  motor_driver->spin(200, 100, 0);
+	  HAL_Delay(2000);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
     /* USER CODE END WHILE */
 
@@ -229,12 +230,55 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPS_nReset_GPIO_Port, GPS_nReset_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, MOT_nEnable_Pin|MOT_STEP_Pin|MOT_DIR_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : DEBUG_LED_Pin */
   GPIO_InitStruct.Pin = DEBUG_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(DEBUG_LED_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : GPS_nReset_Pin */
+  GPIO_InitStruct.Pin = GPS_nReset_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPS_nReset_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : GPS_INT_Pin MAG_DRDY_Pin MAG_INT1_Pin GYR_DRDY_Pin */
+  GPIO_InitStruct.Pin = GPS_INT_Pin|MAG_DRDY_Pin|MAG_INT1_Pin|GYR_DRDY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MOT_nEnable_Pin */
+  GPIO_InitStruct.Pin = MOT_nEnable_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(MOT_nEnable_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MOT_STEP_Pin MOT_DIR_Pin */
+  GPIO_InitStruct.Pin = MOT_STEP_Pin|MOT_DIR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MOT_SENS_B_Pin MOT_SENS_A_Pin */
+  GPIO_InitStruct.Pin = MOT_SENS_B_Pin|MOT_SENS_A_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -251,7 +295,7 @@ void switch_to_bootloader(){
 
 void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 {
-	if(Len == 10 && strcmp(Buf, "deadbeef")){
+	if(Len == 10 && strcmp((char*)Buf, "deadbeef")){
 		switch_to_bootloader();
 	}else{
 		CDC_Transmit_FS(Buf, Len);
@@ -259,19 +303,28 @@ void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 
 }
 
-int __io_putchar(int ch)
+extern "C"
 {
-	*printf_usb_buffer_wpointer = ch;
-	printf_usb_buffer_wpointer++;
-	uint16_t buffer_length = printf_usb_buffer_wpointer-printf_usb_buffer;
-	if((buffer_length>1023)|| ch == '\n'){
-		while(!(CDC_Transmit_FS(printf_usb_buffer, buffer_length) == USBD_BUSY));
-		printf_usb_buffer_wpointer = printf_usb_buffer;
+	int _write(int fd, char *ptr, int len){
+	  (void)fd;
+	  while(!(CDC_Transmit_FS((uint8_t*)ptr, len) == USBD_BUSY));
+	  return len;
 	}
-
-
-  return ch;
 }
+
+//int __io_putchar(int ch)
+//{
+//	*printf_usb_buffer_wpointer = ch;
+//	printf_usb_buffer_wpointer++;
+//	uint16_t buffer_length = printf_usb_buffer_wpointer-printf_usb_buffer;
+//	if((buffer_length>1023)|| ch == '\n'){
+//		while(!(CDC_Transmit_FS(printf_usb_buffer, buffer_length) == USBD_BUSY));
+//		printf_usb_buffer_wpointer = printf_usb_buffer;
+//	}
+//
+//
+//  return ch;
+//}
 /* USER CODE END 4 */
 
 /**
