@@ -1,8 +1,0 @@
-../Core/Src/main.cpp:81:5:int main()	1
-../Core/Src/main.cpp:140:6:void SystemClock_Config()	3
-../Core/Src/main.cpp:183:13:void MX_I2C1_Init()	2
-../Core/Src/main.cpp:217:13:void MX_GPIO_Init()	1
-../Core/Src/main.cpp:289:6:void switch_to_bootloader()	1
-../Core/Src/main.cpp:296:6:void USB_CDC_RxHandler(uint8_t*, uint32_t)	3
-../Core/Src/main.cpp:308:6:int _write(int, char*, int)	2
-../Core/Src/main.cpp:334:6:void Error_Handler()	1

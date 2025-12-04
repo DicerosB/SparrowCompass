@@ -1,2 +1,0 @@
-../Core/Src/MotorDriver.cpp:9:1:MotorDriver::MotorDriver()	16	static
-../Core/Src/MotorDriver.cpp:16:6:void MotorDriver::spin(uint16_t, int, bool)	40	static
