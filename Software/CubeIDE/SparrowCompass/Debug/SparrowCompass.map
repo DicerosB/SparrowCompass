@@ -128,7 +128,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1b ./Core/Src/BatteryManager.o
  .debug_macro   0x00000000      0xba4 ./Core/Src/BatteryManager.o
  .debug_line    0x00000000       0x71 ./Core/Src/BatteryManager.o
- .debug_str     0x00000000     0x32cc ./Core/Src/BatteryManager.o
+ .debug_str     0x00000000     0x32cd ./Core/Src/BatteryManager.o
  .comment       0x00000000       0x44 ./Core/Src/BatteryManager.o
  .debug_frame   0x00000000       0x38 ./Core/Src/BatteryManager.o
  .ARM.attributes
@@ -148,7 +148,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1b ./Core/Src/GPSModule.o
  .debug_macro   0x00000000      0xba4 ./Core/Src/GPSModule.o
  .debug_line    0x00000000       0x67 ./Core/Src/GPSModule.o
- .debug_str     0x00000000     0x32b6 ./Core/Src/GPSModule.o
+ .debug_str     0x00000000     0x32b7 ./Core/Src/GPSModule.o
  .comment       0x00000000       0x44 ./Core/Src/GPSModule.o
  .debug_frame   0x00000000       0x38 ./Core/Src/GPSModule.o
  .ARM.attributes
@@ -168,7 +168,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1b ./Core/Src/Gyroscope.o
  .debug_macro   0x00000000      0xba4 ./Core/Src/Gyroscope.o
  .debug_line    0x00000000       0x67 ./Core/Src/Gyroscope.o
- .debug_str     0x00000000     0x32b1 ./Core/Src/Gyroscope.o
+ .debug_str     0x00000000     0x32b2 ./Core/Src/Gyroscope.o
  .comment       0x00000000       0x44 ./Core/Src/Gyroscope.o
  .debug_frame   0x00000000       0x38 ./Core/Src/Gyroscope.o
  .ARM.attributes
@@ -188,7 +188,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1b ./Core/Src/Magnetometer.o
  .debug_macro   0x00000000      0xba4 ./Core/Src/Magnetometer.o
  .debug_line    0x00000000       0x6d ./Core/Src/Magnetometer.o
- .debug_str     0x00000000     0x32c2 ./Core/Src/Magnetometer.o
+ .debug_str     0x00000000     0x32c3 ./Core/Src/Magnetometer.o
  .comment       0x00000000       0x44 ./Core/Src/Magnetometer.o
  .debug_frame   0x00000000       0x38 ./Core/Src/Magnetometer.o
  .ARM.attributes
@@ -268,7 +268,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1b ./Core/Src/MotorSensor.o
  .debug_macro   0x00000000      0xba4 ./Core/Src/MotorSensor.o
  .debug_line    0x00000000       0x6b ./Core/Src/MotorSensor.o
- .debug_str     0x00000000     0x32c0 ./Core/Src/MotorSensor.o
+ .debug_str     0x00000000     0x32c1 ./Core/Src/MotorSensor.o
  .comment       0x00000000       0x44 ./Core/Src/MotorSensor.o
  .debug_frame   0x00000000       0x38 ./Core/Src/MotorSensor.o
  .ARM.attributes
@@ -1103,7 +1103,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
  .debug_line    0x00000000      0xc73 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
- .debug_str     0x00000000    0x7e7ad ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
+ .debug_str     0x00000000    0x7e7ae ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
  .debug_frame   0x00000000      0x204 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_dma.o
  .ARM.attributes
@@ -1207,7 +1207,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
  .debug_line    0x00000000      0xa3b ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
- .debug_str     0x00000000    0x7e55e ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
+ .debug_str     0x00000000    0x7e55f ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
  .debug_frame   0x00000000      0x174 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_exti.o
  .ARM.attributes
@@ -1320,7 +1320,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
  .debug_line    0x00000000      0xa52 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
- .debug_str     0x00000000    0x7e61b ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
+ .debug_str     0x00000000    0x7e61c ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
  .debug_frame   0x00000000      0x1d8 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash.o
  .ARM.attributes
@@ -1468,7 +1468,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
  .debug_line    0x00000000      0xf64 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
- .debug_str     0x00000000    0x7ea5a ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
+ .debug_str     0x00000000    0x7ea5b ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
  .debug_frame   0x00000000      0x468 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ex.o
  .ARM.attributes
@@ -1555,7 +1555,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
  .debug_line    0x00000000      0x954 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
- .debug_str     0x00000000    0x7e622 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
+ .debug_str     0x00000000    0x7e623 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
  .debug_frame   0x00000000      0x130 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_flash_ramfunc.o
  .ARM.attributes
@@ -2189,7 +2189,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
  .debug_line    0x00000000      0xa15 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
- .debug_str     0x00000000    0x7e6bc ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
+ .debug_str     0x00000000    0x7e6bd ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
  .debug_frame   0x00000000      0x274 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr.o
  .ARM.attributes
@@ -2289,7 +2289,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
  .debug_line    0x00000000      0x946 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
- .debug_str     0x00000000    0x7e49b ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
+ .debug_str     0x00000000    0x7e49c ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
  .debug_frame   0x00000000      0x120 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pwr_ex.o
  .ARM.attributes
@@ -2482,7 +2482,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x162 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
  .debug_macro   0x00000000      0x3ff ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
  .debug_line    0x00000000      0x95f ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
- .debug_str     0x00000000    0x7e5b9 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
+ .debug_str     0x00000000    0x7e5ba ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
  .debug_frame   0x00000000      0x120 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc_ex.o
  .ARM.attributes
@@ -5414,32 +5414,32 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x00011d44      0xace ./USB_DEVICE/App/usbd_desc.o
  .debug_line    0x00012812      0xe0c ./USB_DEVICE/Target/usbd_conf.o
 
-.debug_str      0x00000000    0x8aa7d
- .debug_str     0x00000000    0x8aa7d ./Core/Src/MotorDriver.o
-                              0x82305 (size before relaxing)
- .debug_str     0x0008aa7d    0x85bdf ./Core/Src/main.o
- .debug_str     0x0008aa7d    0x7eb5c ./Core/Src/stm32l1xx_hal_msp.o
- .debug_str     0x0008aa7d    0x7ea28 ./Core/Src/stm32l1xx_it.o
- .debug_str     0x0008aa7d     0x999a ./Core/Src/syscalls.o
- .debug_str     0x0008aa7d     0x7738 ./Core/Src/sysmem.o
- .debug_str     0x0008aa7d    0x7e4ef ./Core/Src/system_stm32l1xx.o
- .debug_str     0x0008aa7d       0x92 ./Core/Startup/startup_stm32l151cctx.o
- .debug_str     0x0008aa7d    0x7eb31 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal.o
- .debug_str     0x0008aa7d    0x7ec3d ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_cortex.o
- .debug_str     0x0008aa7d    0x7e5bb ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_gpio.o
- .debug_str     0x0008aa7d    0x7f499 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_i2c.o
- .debug_str     0x0008aa7d    0x7ec7e ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pcd.o
- .debug_str     0x0008aa7d    0x7e855 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pcd_ex.o
- .debug_str     0x0008aa7d    0x7e8d8 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc.o
- .debug_str     0x0008aa7d    0x7e7f0 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_ll_usb.o
- .debug_str     0x0008aa7d    0x8359d ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
- .debug_str     0x0008aa7d    0x82ee4 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o
- .debug_str     0x0008aa7d    0x82dfe ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
- .debug_str     0x0008aa7d    0x82d2b ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o
- .debug_str     0x0008aa7d    0x831e3 ./USB_DEVICE/App/usb_device.o
- .debug_str     0x0008aa7d    0x830fc ./USB_DEVICE/App/usbd_cdc_if.o
- .debug_str     0x0008aa7d    0x82c64 ./USB_DEVICE/App/usbd_desc.o
- .debug_str     0x0008aa7d    0x83bd9 ./USB_DEVICE/Target/usbd_conf.o
+.debug_str      0x00000000    0x8aa7e
+ .debug_str     0x00000000    0x8aa7e ./Core/Src/MotorDriver.o
+                              0x82306 (size before relaxing)
+ .debug_str     0x0008aa7e    0x85be0 ./Core/Src/main.o
+ .debug_str     0x0008aa7e    0x7eb5d ./Core/Src/stm32l1xx_hal_msp.o
+ .debug_str     0x0008aa7e    0x7ea29 ./Core/Src/stm32l1xx_it.o
+ .debug_str     0x0008aa7e     0x999b ./Core/Src/syscalls.o
+ .debug_str     0x0008aa7e     0x7739 ./Core/Src/sysmem.o
+ .debug_str     0x0008aa7e    0x7e4f0 ./Core/Src/system_stm32l1xx.o
+ .debug_str     0x0008aa7e       0x93 ./Core/Startup/startup_stm32l151cctx.o
+ .debug_str     0x0008aa7e    0x7eb32 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal.o
+ .debug_str     0x0008aa7e    0x7ec3e ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_cortex.o
+ .debug_str     0x0008aa7e    0x7e5bc ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_gpio.o
+ .debug_str     0x0008aa7e    0x7f49a ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_i2c.o
+ .debug_str     0x0008aa7e    0x7ec7f ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pcd.o
+ .debug_str     0x0008aa7e    0x7e856 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_pcd_ex.o
+ .debug_str     0x0008aa7e    0x7e8d9 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_rcc.o
+ .debug_str     0x0008aa7e    0x7e7f1 ./Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_ll_usb.o
+ .debug_str     0x0008aa7e    0x8359e ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+ .debug_str     0x0008aa7e    0x82ee5 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o
+ .debug_str     0x0008aa7e    0x82dff ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
+ .debug_str     0x0008aa7e    0x82d2c ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o
+ .debug_str     0x0008aa7e    0x831e4 ./USB_DEVICE/App/usb_device.o
+ .debug_str     0x0008aa7e    0x830fd ./USB_DEVICE/App/usbd_cdc_if.o
+ .debug_str     0x0008aa7e    0x82c65 ./USB_DEVICE/App/usbd_desc.o
+ .debug_str     0x0008aa7e    0x83bda ./USB_DEVICE/Target/usbd_conf.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/MotorDriver.o
@@ -5533,6 +5533,6 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_frame   0x00004318       0x34 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
 
 .debug_line_str
-                0x00000000       0x76
+                0x00000000       0x77
  .debug_line_str
-                0x00000000       0x76 ./Core/Startup/startup_stm32l151cctx.o
+                0x00000000       0x77 ./Core/Startup/startup_stm32l151cctx.o

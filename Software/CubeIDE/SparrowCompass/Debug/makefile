@@ -88,8 +88,8 @@ all: main-build
 main-build: SparrowCompass.elf secondary-outputs
 
 # Tool invocations
-SparrowCompass.elf SparrowCompass.map: $(OBJS) $(USER_OBJS) C:\Users\Manue\Documents\SparrowCompass\Software\CubeIDE\SparrowCompass\STM32L151CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "SparrowCompass.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Manue\Documents\SparrowCompass\Software\CubeIDE\SparrowCompass\STM32L151CCTX_FLASH.ld" -Wl,-Map="SparrowCompass.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+SparrowCompass.elf SparrowCompass.map: $(OBJS) $(USER_OBJS) E:\Users\Manuel\Documents\SparrowCompass\Software\CubeIDE\SparrowCompass\STM32L151CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "SparrowCompass.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Users\Manuel\Documents\SparrowCompass\Software\CubeIDE\SparrowCompass\STM32L151CCTX_FLASH.ld" -Wl,-Map="SparrowCompass.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
