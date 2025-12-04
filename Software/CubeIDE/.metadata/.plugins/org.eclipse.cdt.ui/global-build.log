@@ -1,7 +1,0 @@
-22:25:50 **** Incremental Build of configuration Debug for project SparrowCompass ****
-make -j16 all 
-arm-none-eabi-size  SparrowCompass.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37400	    580	   6500	  44480	   adc0	SparrowCompass.elf
-Finished building: default.size.stdout
- 
