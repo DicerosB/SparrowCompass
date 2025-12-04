@@ -122,7 +122,7 @@ int main(void)
 	  HAL_Delay(2000);
 	  printf("%d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
-	  motor_driver->spin(200, 100, 0);
+	  motor_driver->spin(3200, 2000, 1);
 	  HAL_Delay(2000);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
     /* USER CODE END WHILE */

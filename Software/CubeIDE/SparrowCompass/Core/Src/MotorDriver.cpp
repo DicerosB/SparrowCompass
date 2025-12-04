@@ -22,7 +22,8 @@ void MotorDriver::spin(uint16_t steps, int speed, bool dir){
 
 	// generate PWM Bitbang
 	double period = 1000/speed; // mili seconds per step
-	printf("spinning motor for %d ms %sclockwise\n", (int)(steps*period), dir?"":"counter");
+	printf("spinning motor for %d ms %sclockwise\n", (int)(steps*period), dir?"counter":"");
+	//__disable_irq();
 	for(uint16_t stp = 0; stp < steps; stp++){
 		HAL_GPIO_WritePin(MOT_STEP_GPIO_Port, MOT_STEP_Pin, GPIO_PIN_SET);
 		HAL_Delay(period/2);
@@ -30,6 +31,7 @@ void MotorDriver::spin(uint16_t steps, int speed, bool dir){
 		HAL_Delay(period/2);
 
 	}
+	//__enable_irq();
 	printf("spinning finished\n");
 	// disable motor
 	HAL_GPIO_WritePin(MOT_nEnable_GPIO_Port, MOT_nEnable_Pin, GPIO_PIN_RESET);
