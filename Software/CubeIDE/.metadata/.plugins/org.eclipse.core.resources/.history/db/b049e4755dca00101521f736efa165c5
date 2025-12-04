@@ -1,0 +1,37 @@
+/*
+ * MotorDriver.cpp
+ *
+ *  Created on: Nov 25, 2025
+ *      Author: Manue
+ */
+#include "MotorDriver.h"
+
+MotorDriver::MotorDriver() {
+	// TODO Auto-generated constructor stub
+
+}
+// step: number of steps
+// speed: number of steps per second
+// dir: direction of rotation
+void MotorDriver::spin(uint16_t steps, int speed, bool dir){
+	// set direction
+	HAL_GPIO_WritePin(MOT_DIR_GPIO_Port, MOT_DIR_Pin, (GPIO_PinState)dir);
+
+	// enable motor
+	HAL_GPIO_WritePin(MOT_nEnable_GPIO_Port, MOT_nEnable_Pin, GPIO_PIN_RESET);
+
+	// generate PWM Bitbang
+	double period = 1000/speed; // mili seconds per step
+	printf("spinning motor for %d ms %sclockwise\n", (int)steps*period, dir?"":"counter");
+	for(uint16_t stp = 0; stp < steps; stp++){
+		HAL_GPIO_WritePin(MOT_STEP_GPIO_Port, MOT_STEP_Pin, GPIO_PIN_RESET);
+		HAL_Delay(period/2);
+		HAL_GPIO_WritePin(MOT_STEP_GPIO_Port, MOT_STEP_Pin, GPIO_PIN_RESET);
+		HAL_Delay(period/2);
+
+	}
+	// disable motor
+	HAL_GPIO_WritePin(MOT_nEnable_GPIO_Port, MOT_nEnable_Pin, GPIO_PIN_RESET);
+
+}
+
