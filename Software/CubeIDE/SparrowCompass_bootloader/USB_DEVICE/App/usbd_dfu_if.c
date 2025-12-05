@@ -61,10 +61,12 @@
   * @{
   */
 
-#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"
+#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/08*04Ka,56*04Kg,06*128Kg,04*016Kg,01*064Kg,07*128Kg"
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
-
+#define FLASH_BASE_ADDR 	((uint32_t)0x08000000)
+#define FLASH_PROGRAM_TIME 	((uint16_t)50)
+#define FLASH_ERASE_TIME 	((uint16_t)50)
 /* USER CODE END PRIVATE_DEFINES */
 
 /**
@@ -125,7 +127,7 @@ static uint16_t MEM_If_DeInit_FS(void);
 static uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer);
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
-
+static uint32_t GetPage(uint32_t Address);
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
@@ -154,6 +156,7 @@ __ALIGN_BEGIN USBD_DFU_MediaTypeDef USBD_DFU_fops_FS __ALIGN_END =
 uint16_t MEM_If_Init_FS(void)
 {
   /* USER CODE BEGIN 0 */
+	HAL_FLASH_Unlock();
   return (USBD_OK);
   /* USER CODE END 0 */
 }
@@ -165,6 +168,7 @@ uint16_t MEM_If_Init_FS(void)
 uint16_t MEM_If_DeInit_FS(void)
 {
   /* USER CODE BEGIN 1 */
+	HAL_FLASH_Lock();
   return (USBD_OK);
   /* USER CODE END 1 */
 }
@@ -177,6 +181,18 @@ uint16_t MEM_If_DeInit_FS(void)
 uint16_t MEM_If_Erase_FS(uint32_t Add)
 {
   /* USER CODE BEGIN 2 */
+	uint32_t startpage = 0, pageerror =0;
+	HAL_StatusTypeDef status;
+	FLASH_EraseInitTypeDef eraseinitstruct;
+
+	startpage = GetPage(Add);
+	eraseinitstruct.TypeErase = FLASH_TYPEERASE_PAGES;
+	eraseinitstruct.PageAddress = startpage;
+	eraseinitstruct.NbPages = 1;
+	status = HAL_FLASHEx_Erase(&eraseinitstruct, &pageerror);
+	if (status != HAL_OK) {
+		return 1;
+	}
 
   return (USBD_OK);
   /* USER CODE END 2 */
@@ -192,6 +208,20 @@ uint16_t MEM_If_Erase_FS(uint32_t Add)
 uint16_t MEM_If_Write_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 {
   /* USER CODE BEGIN 3 */
+	uint32_t i = 0;
+
+	for(i = 0; i < Len; i += 4){
+		if(HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t)(dest+i), *(uint32_t*)(src +1))){
+			if(*(uint32_t*)(src + i) != *(uint32_t*)(dest + i)){
+				// Flash content doesnt match SRAM content
+				return 2;
+			}
+		}else{
+			// Error occured while writing data in Flash memory
+			return 1;
+		}
+	}
+
   return (USBD_OK);
   /* USER CODE END 3 */
 }
@@ -207,7 +237,13 @@ uint8_t *MEM_If_Read_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 {
   /* Return a valid address to avoid HardFault */
   /* USER CODE BEGIN 4 */
-  return (uint8_t*)(USBD_OK);
+	uint32_t i = 0;
+	uint8_t *psrc = src;
+
+	for(i = 0; i <Len; i++){
+		dest[i] = *psrc++;
+	}
+  return (uint8_t*)(dest);
   /* USER CODE END 4 */
 }
 
@@ -224,12 +260,16 @@ uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer)
   switch (Cmd)
   {
     case DFU_MEDIA_PROGRAM:
-
+    	buffer[1] = (uint8_t) FLASH_PROGRAM_TIME;
+    	buffer[2] = (uint8_t) (FLASH_PROGRAM_TIME << 8) ;
+    	buffer[3] = 0;
     break;
 
     case DFU_MEDIA_ERASE:
     default:
-
+    	buffer[1] = (uint8_t) FLASH_PROGRAM_TIME;
+		buffer[2] = (uint8_t) (FLASH_PROGRAM_TIME << 8) ;
+		buffer[3] = 0;
     break;
   }
   return (USBD_OK);
@@ -237,7 +277,9 @@ uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer)
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
-
+static uint32_t GetPage(uint32_t Address){
+	 return (uint32_t) (((Address - FLASH_BASE_ADDR) >> 8) + FLASH_BASE_ADDR); // flash is equally divided into 256 B Pages
+}
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /**

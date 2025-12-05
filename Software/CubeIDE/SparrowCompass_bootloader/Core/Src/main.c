@@ -72,10 +72,12 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	if(*dfu_boot_flag != DFU_BOOT_FLAG){
+		/* Test if user code is programmed starting from address 0x08008000 */
 		if(((*(__IO uint32_t*) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFC0000) == 0x20000000){
+			/* Jump to user application */
 			JumpAddress = *(__IO uint32_t*) (USBD_DFU_APP_DEFAULT_ADD + 4);
 			JumpToApplication = (pFunction) JumpAddress;
-
+			/* Initialize user application's Stack Pointer */
 			__set_MSP(*(__IO uint32_t*) USBD_DFU_APP_DEFAULT_ADD);
 			JumpToApplication();
 		}
@@ -109,11 +111,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-	  HAL_Delay(250);
+	  HAL_Delay(100);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(250);
+	  HAL_Delay(100);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

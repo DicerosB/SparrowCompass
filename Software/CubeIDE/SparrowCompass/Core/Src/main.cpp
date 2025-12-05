@@ -122,7 +122,7 @@ int main(void)
 	  HAL_Delay(2000);
 	  printf("%d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
-	  motor_driver->spin(3200, 2000, 1);
+	  motor_driver->spin(3200, 1000, 1);
 	  HAL_Delay(2000);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
     /* USER CODE END WHILE */
@@ -288,6 +288,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void switch_to_bootloader(){
 	printf("now entering bootloader ..\n");
+	HAL_Delay(1000);
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
@@ -295,7 +296,7 @@ void switch_to_bootloader(){
 
 void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 {
-	if(Len == 10 && strcmp((char*)Buf, "deadbeef")){
+	if(Len == 9 && strcmp((char*)Buf, "deadbeef")){
 		switch_to_bootloader();
 	}else{
 		CDC_Transmit_FS(Buf, Len);
