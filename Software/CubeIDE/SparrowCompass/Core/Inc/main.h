@@ -49,13 +49,15 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len);
-void switch_to_bootloader();
-int __io_putchar(int ch);
-/* USER CODE BEGIN EFP */
 
+/* USER CODE BEGIN EFP */
+void switch_to_bootloader();
+void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len);
+int _write(int fd, char *ptr, int len);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

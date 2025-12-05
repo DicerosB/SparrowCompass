@@ -119,11 +119,15 @@ int main(void)
 
   while (1)
   {
-	  HAL_Delay(2000);
-	  printf("%d\n", (int)loopcounter);
+	  HAL_Delay(1000);
+	  printf("new %d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
-	  motor_driver->spin(3200, 1000, 1);
-	  HAL_Delay(2000);
+	  //motor_driver->spin(3200, 1000, 1);
+	  HAL_Delay(100);
+	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
+	  HAL_Delay(100);
+	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(1000);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_SET);
     /* USER CODE END WHILE */
 
@@ -296,7 +300,9 @@ void switch_to_bootloader(){
 
 void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 {
-	if(Len == 9 && strcmp((char*)Buf, "deadbeef")){
+	char* ss;
+	strncpy(ss, (char*)Buf, 8);
+	if(Len <= 10 && !strcmp(ss, "deadbeef")){
 		switch_to_bootloader();
 	}else{
 		CDC_Transmit_FS(Buf, Len);
