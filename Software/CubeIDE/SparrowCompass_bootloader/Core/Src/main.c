@@ -82,6 +82,8 @@ int main(void)
 			JumpToApplication();
 		}
 	}
+
+	*dfu_boot_flag = 0; // So next boot won't be affected
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

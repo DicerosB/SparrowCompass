@@ -120,7 +120,7 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(1000);
-	  printf("new %d\n", (int)loopcounter);
+	  printf("%d\n", (int)loopcounter);
 	  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, GPIO_PIN_RESET);
 	  //motor_driver->spin(3200, 1000, 1);
 	  HAL_Delay(100);
@@ -292,7 +292,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void switch_to_bootloader(){
 	printf("now entering bootloader ..\n");
-	HAL_Delay(1000);
+	//HAL_Delay(1000);
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
