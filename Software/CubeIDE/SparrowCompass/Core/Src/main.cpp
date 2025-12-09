@@ -292,7 +292,17 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void switch_to_bootloader(){
 	printf("now entering bootloader ..\n");
-	//HAL_Delay(1000);
+	fflush(stdout);
+	//Force USB Host to reset connection and re-enumerate Device
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitStruct.Pin = GPIO_PIN_12;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+	HAL_Delay(10);
+	//set bootloader flag
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
