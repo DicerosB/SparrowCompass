@@ -61,7 +61,7 @@
   * @{
   */
 
-#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"
+#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/08*04Ka,056*04Kg"
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
 #define FLASH_BANK1_END 	((uint32_t)0x0803FFFF)
