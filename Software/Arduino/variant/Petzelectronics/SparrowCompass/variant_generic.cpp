@@ -10,8 +10,7 @@
  *
  *******************************************************************************
  */
-#if defined(ARDUINO_GENERIC_L151CCTX) || defined(ARDUINO_GENERIC_L151CCUX) ||\
-    defined(ARDUINO_GENERIC_L152CCTX) || defined(ARDUINO_GENERIC_L152CCUX)
+#if defined(ARDUINO_SPARROW_COMPASS)
 #include "pins_arduino.h"
 
 // Digital PinName array
