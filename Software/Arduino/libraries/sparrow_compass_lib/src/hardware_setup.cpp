@@ -1,5 +1,7 @@
 #include "hardware_setup.h"
 
+USBSerial* usb;
+uint32_t *dfu_boot_flag;
 
 void hw_init(USBSerial* usb_ref){
   SystemClock_Config();

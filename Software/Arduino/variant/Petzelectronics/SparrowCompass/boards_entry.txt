@@ -2,7 +2,6 @@
 # just copy These lines and paste into boards.txt
 ####################################################################################
 
-
 # SparrowCompass Board
 SparrowC.name=Sparrow Compass
 
@@ -25,3 +24,59 @@ SparrowC.menu.pnum.SPARROW_COMPASS.build.board=SPARROW_COMPASS
 SparrowC.menu.pnum.SPARROW_COMPASS.build.product_line=STM32L151xC
 SparrowC.menu.pnum.SPARROW_COMPASS.build.variant=Petzelectronics/SparrowCompass
 SparrowC.menu.pnum.SPARROW_COMPASSdebug.svd_file={runtime.tools.STM32_SVD.path}/svd/STM32L1xx/STM32L151.svd
+
+# Upload menu
+SparrowC.menu.upload_method.dfuMethod=STM32CubeProgrammer (DFU)
+SparrowC.menu.upload_method.dfuMethod.upload.protocol=dfu
+SparrowC.menu.upload_method.dfuMethod.upload.options=-v {upload.vid} -p {upload.pid} -s{upload.start}
+SparrowC.menu.upload_method.dfuMethod.upload.tool=stm32CubeProg
+
+# USB connectivity
+SparrowC.menu.usb.none=None
+SparrowC.menu.usb.CDCgen=CDC (generic 'Serial' supersede U(S)ART)
+SparrowC.menu.usb.CDCgen.build.enable_usb={build.usb_flags} -DUSBD_USE_CDC
+SparrowC.menu.usb.CDC=CDC (no generic 'Serial')
+SparrowC.menu.usb.CDC.build.enable_usb={build.usb_flags} -DUSBD_USE_CDC -DDISABLE_GENERIC_SERIALUSB
+SparrowC.menu.usb.HID=HID (keyboard and mouse)
+SparrowC.menu.usb.HID.build.enable_usb={build.usb_flags} -DUSBD_USE_HID_COMPOSITE
+
+# Optimizations
+SparrowC.menu.opt.osstd=Smallest (-Os default)
+SparrowC.menu.opt.oslto=Smallest (-Os) with LTO
+SparrowC.menu.opt.oslto.build.flags.optimize=-Os -flto
+SparrowC.menu.opt.o1std=Fast (-O1)
+SparrowC.menu.opt.o1std.build.flags.optimize=-O1
+SparrowC.menu.opt.o1lto=Fast (-O1) with LTO
+SparrowC.menu.opt.o1lto.build.flags.optimize=-O1 -flto
+SparrowC.menu.opt.o2std=Faster (-O2)
+SparrowC.menu.opt.o2std.build.flags.optimize=-O2
+SparrowC.menu.opt.o2lto=Faster (-O2) with LTO
+SparrowC.menu.opt.o2lto.build.flags.optimize=-O2 -flto
+SparrowC.menu.opt.o3std=Fastest (-O3)
+SparrowC.menu.opt.o3std.build.flags.optimize=-O3
+SparrowC.menu.opt.o3lto=Fastest (-O3) with LTO
+SparrowC.menu.opt.o3lto.build.flags.optimize=-O3 -flto
+SparrowC.menu.opt.ogstd=Debug (-Og)
+SparrowC.menu.opt.ogstd.build.flags.optimize=-Og
+SparrowC.menu.opt.o0std=No Optimization (-O0)
+SparrowC.menu.opt.o0std.build.flags.optimize=-O0
+
+# Debug information
+SparrowC.menu.dbg.none=None
+SparrowC.menu.dbg.enable_sym=Symbols Enabled (-g)
+SparrowC.menu.dbg.enable_sym.build.flags.debug=-g -DNDEBUG
+SparrowC.menu.dbg.enable_log=Core logs Enabled
+SparrowC.menu.dbg.enable_log.build.flags.debug=
+SparrowC.menu.dbg.enable_all=Core Logs and Symbols Enabled (-g)
+SparrowC.menu.dbg.enable_all.build.flags.debug=-g
+
+# C Runtime Library
+SparrowC.menu.rtlib.nano=Newlib Nano (default)
+SparrowC.menu.rtlib.nanofp=Newlib Nano + Float Printf
+SparrowC.menu.rtlib.nanofp.build.flags.ldspecs=--specs=nano.specs -u _printf_float
+SparrowC.menu.rtlib.nanofs=Newlib Nano + Float Scanf
+SparrowC.menu.rtlib.nanofs.build.flags.ldspecs=--specs=nano.specs -u _scanf_float
+SparrowC.menu.rtlib.nanofps=Newlib Nano + Float Printf/Scanf
+SparrowC.menu.rtlib.nanofps.build.flags.ldspecs=--specs=nano.specs -u _printf_float -u _scanf_float
+SparrowC.menu.rtlib.full=Newlib Standard
+SparrowC.menu.rtlib.full.build.flags.ldspecs=

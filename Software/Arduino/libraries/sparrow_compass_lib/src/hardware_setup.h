@@ -1,5 +1,5 @@
-#ifndef _SPARROWCOMPASS_H_
-#define _SPARROWCOMPASS_H_
+#ifndef _HARDWARE_SETUP_H_
+#define _HARDWARE_SETUP_H_
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -19,7 +19,7 @@
 #define FLASH_BASE 0x8008000
 #define DFU_BOOT_FLAG 0xDEADBEEF
 
-USBSerial* usb;
+
 
 void hw_init(USBSerial* usb_ref);
 
@@ -33,7 +33,6 @@ int _write(int fd, char *ptr, int len);
 void SystemClock_Config(void);
 
 extern int _bflag;
-uint32_t *dfu_boot_flag;
 
 // hardware pinout
 #define DEBUG_LED_Pin PC13
