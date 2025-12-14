@@ -23,13 +23,18 @@ SparrowC.menu.pnum.SPARROW_COMPASS.upload.maximum_data_size=32768
 SparrowC.menu.pnum.SPARROW_COMPASS.build.board=SPARROW_COMPASS
 SparrowC.menu.pnum.SPARROW_COMPASS.build.product_line=STM32L151xC
 SparrowC.menu.pnum.SPARROW_COMPASS.build.variant=Petzelectronics/SparrowCompass
-SparrowC.menu.pnum.SPARROW_COMPASSdebug.svd_file={runtime.tools.STM32_SVD.path}/svd/STM32L1xx/STM32L151.svd
+SparrowC.menu.pnum.SPARROW_COMPASS.debug.svd_file={runtime.tools.STM32_SVD.path}/svd/STM32L1xx/STM32L151.svd
 
 # Upload menu
 SparrowC.menu.upload_method.dfuMethod=STM32CubeProgrammer (DFU)
 SparrowC.menu.upload_method.dfuMethod.upload.protocol=dfu
 SparrowC.menu.upload_method.dfuMethod.upload.options=-v {upload.vid} -p {upload.pid} -s{upload.start}
 SparrowC.menu.upload_method.dfuMethod.upload.tool=stm32CubeProg
+
+SparrowC.menu.upload_method.swdMethod=STM32CubeProgrammer (SWD)
+SparrowC.menu.upload_method.swdMethod.upload.protocol=swd
+SparrowC.menu.upload_method.swdMethod.upload.options=
+SparrowC.menu.upload_method.swdMethod.upload.tool=stm32CubeProg
 
 # USB connectivity
 SparrowC.menu.usb.none=None
