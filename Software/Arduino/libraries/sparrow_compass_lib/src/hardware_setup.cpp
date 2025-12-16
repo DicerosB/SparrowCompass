@@ -3,28 +3,27 @@
 USBSerial* usb;
 uint32_t *dfu_boot_flag;
 
-void hw_init(USBSerial* usb_ref){
-  GPIO_Init();
-  usb_ref = new(USBSerial);
-  usb = usb_ref;
-  usb->begin();
+void hw_init(){
+  pinMode(DEBUG_LED_Pin, OUTPUT);
+  pinMode(GPS_nReset_Pin, OUTPUT);
+  pinMode(MOT_nEnable_Pin, OUTPUT);
+  pinMode(MOT_STEP_Pin, OUTPUT);
+  pinMode(MOT_DIR_Pin, OUTPUT);
 }
 
-static void USB_Device_Init(){
-
-}
-void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
-{
-	if(Len == 10 && strcmp((char*)Buf, "deadbeef")){
-		switch_to_bootloader();
-	}else{
-		usb->write(Buf, Len);
-	}
-
+void setup_usb(){
+    // force USB host to re-enumerate
+  pinMode(PA12, OUTPUT);
+  digitalWrite(PA12, LOW);
+  delay(100);
+  digitalWrite(PA12, HIGH);
+  HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
+  Serial.begin(9600);
+  while (!Serial);
 }
 
 void switch_to_bootloader(){
-	printf("now entering bootloader ..\n");
+  Serial.flush()
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
