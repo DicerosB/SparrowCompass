@@ -23,7 +23,7 @@ void setup_usb(){
 }
 
 void switch_to_bootloader(){
-  Serial.flush()
+  Serial.flush();
 	dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
