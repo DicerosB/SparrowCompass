@@ -44,3 +44,35 @@ Now clear the IDE cache again like described [before](#extending-the-boards-mana
 If the installation was successful, an example script should appear under File -> Example -> Examples from Custom Libraries
 
 # Usage
+
+There are two opions for flashing the microcontroller. One is flashing via SWD (Serial Wire Debug), the other is via USB and the DFU protocol. SWD is faster and allows for a debuggung functionality but it also requires to hook up a swd probe to the exposed swd pins on the board. DFU flashing is possible with the custom dfu bootloader using the usb-c port of the device.
+
+## Flasing via SWD
+
+Connect the debug probe to the GND (G), DIO(D) and SCK(C) Pins located on left side of the board.
+
+Plug the probe into your PC and connect power to the device.
+
+In the Arduino IDE, select Tools -> Upload method -> STM32CubeProgrammer (SWD).
+
+Now, the device can be flashed via the upload icon.
+
+## Flashing via USB
+
+Connect the device via USB to your PC.
+
+Open a serial terminal (Tools -> Serial Monitor) and connect to the VCOM Port, which has just been connected. The Baud Rate can be ignored, as the VCOM connection has no underlying UART. 
+
+In order to enter bootloader (DFU) mode, the keyword "deadbeef" must be sent via serial terminal. In bootloader mode, the LED near the Microcontroller is blinking every 100 ms. 
+
+In the Arduino IDE, select Tools -> Upload method -> STM32CubeProgrammer (DFU).
+
+Now, the device can be flashed via the upload icon. After flashing, the device automatically resets and enters normal mode again.
+
+## Debugging via SWD
+
+Enable debug symbols: Tools -> Debug symbols and core logs.
+
+Optimize for Debug: Tools -> Optimize -> Debug (Og).
+
+Make sure you flash your code before debugging.
