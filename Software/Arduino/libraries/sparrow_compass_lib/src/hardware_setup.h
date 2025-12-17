@@ -6,6 +6,11 @@
 
 #define DFU_BOOT_FLAG 0xDEADBEEF
 
+#define I2C_ADR_GYROSCOPE 0x6B
+#define I2C_ADR_MAGNETOMETER 0x1E
+#define I2C_ADR_ACCELEROMETER 0x19
+#define I2C_ADR_GPS 0x42
+
 extern int _bflag;
 
 void hw_init();

@@ -9,6 +9,10 @@ void hw_init(){
   pinMode(MOT_nEnable_Pin, OUTPUT);
   pinMode(MOT_STEP_Pin, OUTPUT);
   pinMode(MOT_DIR_Pin, OUTPUT);
+
+  digitalWrite(GPS_nReset_Pin, HIGH);
+  digitalWrite(MOT_nEnable_Pin, HIGH);
+
 }
 
 void setup_usb(){
@@ -19,7 +23,7 @@ void setup_usb(){
   digitalWrite(PA12, HIGH);
   HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
   Serial.begin(9600);
-  while (!Serial);
+  //while (!Serial);
 }
 
 void switch_to_bootloader(){
