@@ -216,7 +216,6 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);   // Back high - so host will enumerate
   HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
   /* USER CODE END MX_GPIO_Init_2 */
-
 }
 
 /* USER CODE BEGIN 4 */
