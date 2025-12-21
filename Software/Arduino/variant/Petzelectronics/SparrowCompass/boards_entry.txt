@@ -40,10 +40,6 @@ SparrowC.menu.upload_method.swdMethod.upload.tool=stm32CubeProg
 SparrowC.menu.usb.none=None
 SparrowC.menu.usb.CDCgen=CDC (generic 'Serial' supersede U(S)ART)
 SparrowC.menu.usb.CDCgen.build.enable_usb={build.usb_flags} -DUSBD_USE_CDC
-SparrowC.menu.usb.CDC=CDC (no generic 'Serial')
-SparrowC.menu.usb.CDC.build.enable_usb={build.usb_flags} -DUSBD_USE_CDC -DDISABLE_GENERIC_SERIALUSB
-SparrowC.menu.usb.HID=HID (keyboard and mouse)
-SparrowC.menu.usb.HID.build.enable_usb={build.usb_flags} -DUSBD_USE_HID_COMPOSITE
 
 # Optimizations
 SparrowC.menu.opt.osstd=Smallest (-Os default)
