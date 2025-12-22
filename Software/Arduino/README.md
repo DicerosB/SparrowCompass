@@ -39,9 +39,9 @@ Copy the content of the "libraries" folder in this directory.
 
 Paste the content into the Arduino Library folder, which is most often located under `Documents\Arduino\libraries`
 
-Now clear the IDE cache again like described [before](#extending-the-boards-manager-with-sparrow-compass-variant)
-
 If the installation was successful, an example script should appear under File -> Example -> Examples from Custom Libraries
+
+If the library is still missing, try to clear the IDE cache again like described [before](#extending-the-boards-manager-with-sparrow-compass-variant)
 
 # Usage
 
@@ -76,3 +76,13 @@ Enable debug symbols: Tools -> Debug symbols and core logs.
 Optimize for Debug: Tools -> Optimize -> Debug (Og).
 
 Make sure you flash your code before debugging.
+
+# Development
+Arduino IDE is loading libraries only form the default library directory (Most often `Documents/Arduino/libraries`). As this library is a part of a bigger (git) project, it's inconvenient to develop and debug code inside this directory. A good workaround is the use of symbolic links.
+
+Windows does not allow the creation of symbolic direcory links by default, so this needs to be enabled in Windows Settings by activating the Developer mode under System->Advanced->Developer mode.
+
+Now a symbolic link can be created via cmd (not Powershell) in the Arduino libraries directory:
+~~~
+mklink \D <LINK NAME> <PATH-TO-sparrow_compass_lib>
+~~~

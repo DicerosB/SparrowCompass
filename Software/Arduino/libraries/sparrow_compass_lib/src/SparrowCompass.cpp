@@ -3,23 +3,21 @@
 SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb){
   this->i2c = p_i2c;
   this->usb = p_usb;
+  loopcounter = 0;
   acc_module, gyr_module, mot_module, mag_module, gps_module = 0;
 }
 
 void SparrowCompass::begin(){
   hw_init();
   setup_usb();
-  usb->println(hello_world_message);
+  *usb << hello_world_message;
   i2c->begin();
   scan_for_modules();
   init_modules();
 }
 
-void SparrowCompass::init_modules(){
-
-}
-
 void SparrowCompass::work(){
+
   // handle USB input
   if(usb->available()){
     String buffer = usb->readString();
@@ -28,17 +26,38 @@ void SparrowCompass::work(){
     if(buffer == "deadbeef"){
       switch_to_bootloader();
     }else{
-      usb->println(buffer);
+      *usb << buffer << "\n";
     }
+  }
+
+  digitalWrite(DEBUG_LED_Pin, 1);
+  //motor->start();
+  delay(2000);
+  digitalWrite(DEBUG_LED_Pin, 0);
+  //motor->stop();
+  delay(10000);
+
+  loopcounter++;
+}
+
+void SparrowCompass::init_modules(){
+  if(mot_module){
+    #ifdef VERBOSE_OUTPUT
+    *usb << "Initialising Motor.\n";
+    #endif
+    *motor = SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin);
+  }
+  if(mag_module){
+    #ifdef VERBOSE_OUTPUT
+    *usb << "Initialising Magnetometer.\n";
+    #endif
+    *magnetometer = SC_Magnetometer(I2C_ADR_MAGNETOMETER);
   }
 }
 
 void SparrowCompass::hw_init(){
   pinMode(DEBUG_LED_Pin, OUTPUT);
   pinMode(GPS_nReset_Pin, OUTPUT);
-  pinMode(MOT_nEnable_Pin, OUTPUT);
-  pinMode(MOT_STEP_Pin, OUTPUT);
-  pinMode(MOT_DIR_Pin, OUTPUT);
 
   digitalWrite(GPS_nReset_Pin, HIGH);
   digitalWrite(MOT_nEnable_Pin, HIGH);
@@ -52,13 +71,18 @@ void SparrowCompass::setup_usb(){
   digitalWrite(PA12, HIGH);
   HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12);
   usb->begin();
+  uint32_t timeout = millis()+10000;
+  while(!*usb){
+    delay(100);
+    if(millis() > timeout) break; // no usb connected
+  }
 }
 
 void SparrowCompass::scan_for_modules(){
   uint8_t error, address;
-
-  usb->println("Scanning for Modules");
-
+  #ifdef VERBOSE_OUTPUT
+  *usb << "Scanning for Modules...\n";
+  #endif
   for(address = 1; address < 127; address++) {
     i2c->beginTransmission(address);
     error = i2c->endTransmission();
@@ -68,40 +92,52 @@ void SparrowCompass::scan_for_modules(){
         case I2C_ADR_GYROSCOPE:
           #ifdef ENABLE_GYROSCOPE
             gyr_module = 1;
-            usb << "Gyroscope found.";
+            #ifdef VERBOSE_OUTPUT
+            *usb << "Gyroscope found.\n";
+            #endif
           #endif
         break;
         case I2C_ADR_ACCELEROMETER:
           #ifdef ENABLE_ACCELEROMETER
             acc_module = 1;
-            usb->println("Accelerometer found.");
+            #ifdef VERBOSE_OUTPUT
+            *usb << "Accelerometer found.\n";
+            #endif
           #endif
         break;
         case I2C_ADR_MAGNETOMETER:
           #ifdef ENABLE_MAGNETOMETER
             mag_module = 1;
-            usb->println("Magnetometer found.");
+            #ifdef VERBOSE_OUTPUT
+            *usb << "Magnetometer found.\n";
+            #endif
           #endif
         break;
         case I2C_ADR_GPS:
           #ifdef ENABLE_GPS
             gps_module = 1;
-            usb->println("GPS found.");
+            #ifdef VERBOSE_OUTPUT
+            *usb << "GPS found.\n";
+            #endif
           #endif
         break;
         default:
-          usb->println("Unknown module found at address 0x%2H", address);
+          #ifdef VERBOSE_OUTPUT
+          *usb << "Unknown module found at address 0x" << _HEX(address) << "\n";
+          #endif
         break;
       }
     }
     else if (error == 4) {
-      usb->println("Communication error at address 0x%2H", address);
+      #ifdef VERBOSE_OUTPUT
+      *usb << "Communication error at address 0x" << _HEX(address) << "\n";
+      #endif
     }
   }
 }
 
 void SparrowCompass::switch_to_bootloader(){
-  usb->println(F("switching to bootloader ..."));
+  *usb << "switching to bootloader ...\n";
   usb->flush();
 	uint32_t* dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;

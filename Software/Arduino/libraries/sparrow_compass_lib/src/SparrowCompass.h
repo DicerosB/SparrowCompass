@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <ostream>
+#include "Streaming.h"
+#include "sc_motor.h"
+
 
 // boot flag value for entering bootloader mode
 #define DFU_BOOT_FLAG 0xDEADBEEF
@@ -18,7 +22,7 @@
 #define I2C_ADR_GYROSCOPE 0x6B
 #define I2C_ADR_MAGNETOMETER 0x1E
 #define I2C_ADR_ACCELEROMETER 0x19
-#define I2C_ADR_GPS 0x41
+#define I2C_ADR_GPS 0x42
 
 // hardware pinout
 #define DEBUG_LED_Pin PC13
@@ -35,12 +39,15 @@
 #define MOT_SENS_B_EXTI_IRQn EXTI15_10_IRQn
 #define MOT_SENS_A_EXTI_IRQn EXTI15_10_IRQn
 
+// other config
+#define VERBOSE_OUTPUT
+
 // project metadata
 #define PROJECT_VERSION "0.0.1"
 #define PROJECT_AUTHOR "Petzoldt"
 
 extern int _bflag;
-String hello_world_message = F(
+const String hello_world_message = F(
   "\n~~~~~ Sparrow Compass ~~~~~~~\n "
   "Arduino Library\n"
   "Project Version: " PROJECT_VERSION "\n"
@@ -61,8 +68,10 @@ class SparrowCompass{
 
   private:
   bool acc_module, gyr_module, mot_module, mag_module, gps_module;
+  uint32_t loopcounter;
   TwoWire *i2c;
   USBSerial *usb;
+  SC_Motor* motor;
 
   void switch_to_bootloader();
   void scan_for_modules();
