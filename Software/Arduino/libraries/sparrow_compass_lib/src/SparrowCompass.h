@@ -6,6 +6,7 @@
 #include <ostream>
 #include "Streaming.h"
 #include "sc_motor.h"
+#include "sc_magnetometer.h"
 
 
 // boot flag value for entering bootloader mode
@@ -72,6 +73,7 @@ class SparrowCompass{
   TwoWire *i2c;
   USBSerial *usb;
   SC_Motor* motor;
+  SC_Magnetometer* magnetometer;
 
   void switch_to_bootloader();
   void scan_for_modules();

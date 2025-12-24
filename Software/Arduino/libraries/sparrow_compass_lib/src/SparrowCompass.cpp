@@ -14,6 +14,12 @@ void SparrowCompass::begin(){
   i2c->begin();
   scan_for_modules();
   init_modules();
+
+  // module test
+  if(mag_module){
+    usb->println((uint32_t)i2c);
+    *usb << "magnetometer ID:" << magnetometer->get_id() << "\n";
+  }
 }
 
 void SparrowCompass::work(){
@@ -29,7 +35,7 @@ void SparrowCompass::work(){
       *usb << buffer << "\n";
     }
   }
-
+  
   digitalWrite(DEBUG_LED_Pin, 1);
   //motor->start();
   delay(2000);
@@ -51,7 +57,7 @@ void SparrowCompass::init_modules(){
     #ifdef VERBOSE_OUTPUT
     *usb << "Initialising Magnetometer.\n";
     #endif
-    *magnetometer = SC_Magnetometer(I2C_ADR_MAGNETOMETER);
+    *magnetometer = SC_Magnetometer(*i2c, I2C_ADR_MAGNETOMETER);
   }
 }
 
