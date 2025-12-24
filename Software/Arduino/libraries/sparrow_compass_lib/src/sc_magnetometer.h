@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "Wire.h"
+#include <memory>
 
 // magnetometer register map
 #define OFFSET_X_REG_L_M    0x45    // R/W
@@ -35,15 +36,12 @@ extern "C" {
 class SC_Magnetometer{
   public:
   
-  SC_Magnetometer(TwoWire& p_i2c, uint8_t address)
-    : i2c(p_i2c),
-    address(address)
-    {}
+  SC_Magnetometer(TwoWire* p_i2c, uint8_t address);
   uint8_t get_id();
 
   private:
   uint8_t address;
-  TwoWire *i2cx;
+  TwoWire* i2c;
   uint8_t _read_register(uint8_t* buffer, uint8_t reg_addr, uint8_t len = 1);
   uint8_t _write_register(uint8_t* buffer, uint8_t reg_addr, uint8_t len = 1);
 };
