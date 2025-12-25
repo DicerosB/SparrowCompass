@@ -11,6 +11,11 @@ uint8_t SC_Magnetometer::get_id(){
     return id;
 }
 
+uint16_t SC_Magnetometer::get_x(){
+    uint16_t id = 0;
+    _read_register((uint8_t*)&id, OUTX_H_REG_M, 2);
+    return id;
+}
 uint8_t SC_Magnetometer::_read_register(uint8_t* buffer, uint8_t reg_addr, uint8_t len){
     uint8_t error = 0;
     

@@ -38,6 +38,7 @@ class SC_Magnetometer{
   
   SC_Magnetometer(TwoWire* p_i2c, uint8_t address);
   uint8_t get_id();
+  uint16_t get_x();
 
   private:
   uint8_t address;
