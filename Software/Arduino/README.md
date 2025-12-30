@@ -84,5 +84,5 @@ Windows does not allow the creation of symbolic direcory links by default, so th
 
 Now a symbolic link can be created via cmd (not Powershell) in the Arduino libraries directory:
 ~~~
-mklink \D <LINK NAME> <PATH-TO-sparrow_compass_lib>
+mklink /D <LINK NAME> <PATH-TO-sparrow_compass_lib>
 ~~~
