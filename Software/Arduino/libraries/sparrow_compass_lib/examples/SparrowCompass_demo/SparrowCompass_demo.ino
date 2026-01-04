@@ -1,6 +1,7 @@
 #include "SparrowCompass.h"
+#include "Wire.h"
 
-SparrowCompass sp_compass = SparrowCompass();
+SparrowCompass sp_compass = SparrowCompass(&Wire, &Serial);
 
 void setup() {
   // put your setup code here, to run once:
