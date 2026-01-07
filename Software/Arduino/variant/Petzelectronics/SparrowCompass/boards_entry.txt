@@ -7,7 +7,7 @@ SparrowC.name=Sparrow Compass
 
 SparrowC.build.core=arduino
 SparrowC.build.board=SparrowC
-SparrowC.build.st_extra_flags=-D{build.product_line} {build.enable_usb} {build.xSerial}
+SparrowC.build.st_extra_flags=-D{build.product_line} {build.enable_usb} {build.xSerial} -DHSE_VALUE=16000000U
 SparrowC.build.mcu=cortex-m3
 SparrowC.build.series=STM32L1xx
 SparrowC.build.flash_offset=0x8000
