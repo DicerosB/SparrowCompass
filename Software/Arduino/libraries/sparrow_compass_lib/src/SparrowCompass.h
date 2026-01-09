@@ -78,7 +78,6 @@ class SparrowCompass{
   void switch_to_bootloader();
   void scan_for_modules();
   void setup_usb();
-  void hw_init();
   void init_modules();
 };
 

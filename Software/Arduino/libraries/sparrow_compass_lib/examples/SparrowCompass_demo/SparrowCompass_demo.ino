@@ -11,8 +11,12 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   sp_compass.work();
+  /*
   digitalWrite(DEBUG_LED_Pin, 1);
-  delay(500);
+  digitalWrite(MOT_nEnable_Pin, 0);
+  delay(2000);
   digitalWrite(DEBUG_LED_Pin, 0);
-  delay(500);
+  digitalWrite(MOT_nEnable_Pin, 1);
+  delay(2000);
+  */
 }

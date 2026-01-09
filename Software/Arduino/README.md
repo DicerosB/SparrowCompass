@@ -1,6 +1,6 @@
 This Directory contains all files reqiured for setting up the Adruino IDE in order to use Sparrow Compass. The following Steps describes the installation of the library and the board variant
 
-# Prerquisites
+# Prerequisites
 - Arduino IDE 2.0+ [Download Page](https://docs.arduino.cc/software/ide-v2/tutorials/getting-started/ide-v2-downloading-and-installing/)
 - Stm32CubeProgrammer [Download Page](https://www.st.com/en/development-tools/stm32cubeprog.html)
 
@@ -12,7 +12,7 @@ Paste the following link to "Additional boards manager URLs"
 ~~~
 https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json
 ~~~
-Wait until Download finishes. Then open Boards Manager Tab (Sidebar) and Install "SM32 MCU based boards".
+Wait until Download finishes. Then open Boards Manager Tab (Sidebar) and Install "STM32 MCU based boards".
 
 If installation succeeded, a new option should appear under Tools -> Board
 

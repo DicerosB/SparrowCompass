@@ -13,7 +13,6 @@ SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
 {}
 
 void SparrowCompass::begin(){
-  hw_init();
   setup_usb();
   *usb << hello_world_message;
   i2c->begin();
@@ -39,13 +38,13 @@ void SparrowCompass::work(){
       *usb << buffer << "\n";
     }
   }
-  *usb << "magnetometer X:" << magnetometer->get_x() << "\n";
-  digitalWrite(DEBUG_LED_Pin, 1);
-  delay(2000);
-  digitalWrite(DEBUG_LED_Pin, 0);
-  delay(2000);
-
   loopcounter++;
+
+  *usb << loopcounter << "\n";
+  motor->start();
+  delay(2000);
+  motor->stop();
+  delay(2000);
 }
 
 void SparrowCompass::init_modules(){
@@ -61,14 +60,6 @@ void SparrowCompass::init_modules(){
     #endif
     magnetometer = new SC_Magnetometer(i2c, I2C_ADR_MAGNETOMETER);
   }
-}
-
-void SparrowCompass::hw_init(){
-  pinMode(DEBUG_LED_Pin, OUTPUT);
-  pinMode(GPS_nReset_Pin, OUTPUT);
-
-  digitalWrite(GPS_nReset_Pin, HIGH);
-  digitalWrite(MOT_nEnable_Pin, HIGH);
 }
 
 void SparrowCompass::setup_usb(){
