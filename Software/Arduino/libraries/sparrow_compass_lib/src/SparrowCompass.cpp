@@ -39,11 +39,15 @@ void SparrowCompass::work(){
       *usb << buffer << "\n";
     }
   }
-  *usb << "magnetometer X:" << magnetometer->get_x() << "\n";
+  
   digitalWrite(DEBUG_LED_Pin, 1);
+  motor->start();
   delay(2000);
   digitalWrite(DEBUG_LED_Pin, 0);
+  motor->stop();
+  motor->set_dir(!motor->get_dir());
   delay(2000);
+
 
   loopcounter++;
 }

@@ -3,6 +3,9 @@
 
 #include "Arduino.h"
 
+#define MICROSTEPPING 32
+#define PULSES_REVOLUTION 200
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,6 +21,7 @@ class SC_Motor{
   void move_n_pulses(uint32_t pulses);
 
   private:
+  HardwareTimer *step_timer;
   uint8_t nEnable_pin, step_pin, dir_pin;
   uint16_t speed;
   bool direction;
