@@ -16,6 +16,7 @@ class SC_Motor{
   SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin);
   void set_speed(uint16_t pulsefreq);
   void set_direction(bool clockwise);
+  bool get_direction();
   void start();
   void stop();
   void move_n_pulses(uint32_t pulses);

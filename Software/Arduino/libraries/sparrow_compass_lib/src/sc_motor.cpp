@@ -12,32 +12,48 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin){
 
     TIM_TypeDef *Instance = TIM10;
     this->step_timer = new HardwareTimer(Instance);
-    step_timer->setOverflow(5000, HERTZ_FORMAT);
-    step_timer->setMode(1, TIMER_OUTPUT_COMPARE_PW1, step_pin);
-    step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT);
-    step_timer->pause();
+    this->step_timer->setOverflow(5000, HERTZ_FORMAT);
+    this->step_timer->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, step_pin);
+    this->step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT);
+    digitalWrite(nEnable_pin, LOW);
+    this->start();
+    delay(2000);
+    Serial.println("Stop Motor.\n");
+    this->stop();
+    Serial.println("Stopped Motor.\n");
+    this->set_direction(!this->get_direction());
+    delay(2000);
+    Serial.println("Start Motor.\n");
+    this->start();
+    Serial.println("Started Motor.\n");
+    delay(2000);
+    this->stop();
 
 }
 
 void SC_Motor::set_speed(uint16_t pulsefreq){
-    step_timer->setOverflow(5000, HERTZ_FORMAT);
-    step_timer->refresh();
+    this->step_timer->setOverflow(5000, HERTZ_FORMAT);
+    this->step_timer->refresh();
 }
 
 void SC_Motor::set_direction(bool clockwise){
     digitalWrite(dir_pin, clockwise);
 }
 
+bool SC_Motor::get_direction(){
+    return this->direction;
+}
+
 void SC_Motor::start(){
     digitalWrite(nEnable_pin, LOW);
-    step_timer->resume();
+    this->step_timer->resume();
 }
 
 void SC_Motor::stop(){
-    step_timer->pause();
+    this->step_timer->pause();
     digitalWrite(nEnable_pin, HIGH);
 }
 
 void SC_Motor::move_n_pulses(uint32_t pulses){
-    
+
 }

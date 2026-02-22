@@ -27,7 +27,7 @@ void SparrowCompass::begin(){
 }
 
 void SparrowCompass::work(){
-
+  *usb << "working.\n";
   // handle USB input
   if(usb->available()){
     String buffer = usb->readString();
@@ -39,16 +39,18 @@ void SparrowCompass::work(){
       *usb << buffer << "\n";
     }
   }
-  
-  digitalWrite(DEBUG_LED_Pin, 1);
-  motor->start();
-  delay(2000);
+  *usb << "Stop Motor.\n";
   digitalWrite(DEBUG_LED_Pin, 0);
   motor->stop();
-  motor->set_dir(!motor->get_dir());
+  *usb << "Stopped Motor.\n";
+  motor->set_direction(!motor->get_direction());
   delay(2000);
-
-
+  *usb << "Start Motor.\n";
+  digitalWrite(DEBUG_LED_Pin, 1);
+  motor->start();
+  *usb << "Started Motor.\n";
+  delay(2000);
+  
   loopcounter++;
 }
 
@@ -57,7 +59,8 @@ void SparrowCompass::init_modules(){
     #ifdef VERBOSE_OUTPUT
     *usb << "Initialising Motor.\n";
     #endif
-    *motor = SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin);
+    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin);
+    *usb << "Initialised Motor.\n";
   }
   if(mag_module){
     #ifdef VERBOSE_OUTPUT
@@ -92,6 +95,14 @@ void SparrowCompass::setup_usb(){
 
 void SparrowCompass::scan_for_modules(){
   uint8_t error, address;
+  
+  #ifdef ENABLE_MOTOR
+    mot_module = 1;
+    #ifdef VERBOSE_OUTPUT
+    *usb << "Enabled Motor.\n";
+    #endif
+  #endif
+
   #ifdef VERBOSE_OUTPUT
   *usb << "Scanning for Modules...\n";
   #endif
