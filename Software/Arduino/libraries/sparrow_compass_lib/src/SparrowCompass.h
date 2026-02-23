@@ -72,8 +72,8 @@ class SparrowCompass{
   uint32_t loopcounter;
   TwoWire *i2c;
   USBSerial *usb;
-  SC_Motor* motor;
-  SC_Magnetometer* magnetometer;
+  static SC_Motor* motor;
+  static SC_Magnetometer* magnetometer;
 
   void switch_to_bootloader();
   void scan_for_modules();
