@@ -39,16 +39,10 @@ void SparrowCompass::work(){
       *usb << buffer << "\n";
     }
   }
-  *usb << "Stop Motor.\n";
+
   digitalWrite(DEBUG_LED_Pin, 0);
-  motor->stop();
-  *usb << "Stopped Motor.\n";
-  motor->set_direction(!motor->get_direction());
   delay(2000);
-  *usb << "Start Motor.\n";
   digitalWrite(DEBUG_LED_Pin, 1);
-  motor->start();
-  *usb << "Started Motor.\n";
   delay(2000);
   
   loopcounter++;
@@ -59,7 +53,7 @@ void SparrowCompass::init_modules(){
     #ifdef VERBOSE_OUTPUT
     *usb << "Initialising Motor.\n";
     #endif
-    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin);
+    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin);
     *usb << "Initialised Motor.\n";
   }
   if(mag_module){

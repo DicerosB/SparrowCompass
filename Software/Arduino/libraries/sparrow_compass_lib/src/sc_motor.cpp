@@ -11,14 +11,16 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8
 
     pinMode(nEnable_pin, OUTPUT);
     pinMode(dir_pin, OUTPUT);
-    pinMode(sync_pin, INPUT)
+    pinMode(sync_pin, INPUT);
 
     digitalWrite(nEnable_pin, HIGH);
     digitalWrite(dir_pin, LOW);
     // Member init
     target_speed = 5000; 
     rot_direction = CW;
+    rot_counter = 0;
     currently_moving = false;
+    moving_infinitely = false;
     synchronized = false;
     // Hardware Timer
     TIM_TypeDef *Instance = TIM10;
@@ -26,30 +28,30 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8
     step_timer->setOverflow(5000, HERTZ_FORMAT);
     step_timer->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, step_pin);
     step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT);
-    step_timer->attachInterrupt(pwm_callback); 
+    step_timer->attachInterrupt(timer_period_callback); 
     synchronize();
 }
 
 void SC_Motor::set_speed(uint16_t rpm){
-    target_speed = rpm;
+    target_speed = (rpm>MAX_SPEED)? MAX_SPEED : rpm;
 }
-uint16_t get_speed(){
+uint16_t SC_Motor::get_speed(){
     return target_speed;
 }
-uint16_t get_current_speed(){
-    return freq2rpm(step_timer->setOverflow(HERTZ_FORMAT));
+uint16_t SC_Motor::get_current_speed(){
+    return freq2rpm(step_timer->getOverflow(HERTZ_FORMAT));
 }
 
 void SC_Motor::set_direction_cw(){
-    rot_direction = CW
+    rot_direction = CW;
 }
 
 void SC_Motor::set_direction_ccw(){
-    rot_direction = CCW
+    rot_direction = CCW;
 }
 
 bool SC_Motor::get_direction(){
-    return direction;
+    return rot_direction;
 }
 
 bool SC_Motor::is_moving(){
@@ -61,41 +63,45 @@ void SC_Motor::move_inf(){
     digitalWrite(dir_pin, (uint8_t)rot_direction+1);
     digitalWrite(nEnable_pin, LOW);
     currently_moving = true;
-    step_timer->setOverflow(rpm2freq(speed), HERTZ_FORMAT);
+    moving_infinitely = false;
+    step_timer->setOverflow(rpm2freq(1), HERTZ_FORMAT);
     step_timer->resume();
 }
 
 void SC_Motor::stop(){
-    // stop any movement
-    step_timer->pause();
-    currently_moving = false;
-    digitalWrite(nEnable_pin, HIGH);
+    // stop as fast as possible
+    moving_infinitely = false;
+    uint32_t pulse_delta = uint16_t(get_current_speed()/ACCELERATION) + 2; // + 2 ensures reaching min velocity in time;
+    target_counter = pulse_counter + (pulse_delta * rot_direction);
 }
 
-void SC_Motor::synchronize(){
-    // move motor slowly a full rotation until synchronized
-    uint16_t current_speed = target_speed;
+uint8_t SC_Motor::synchronize(){
+    // move motor slowly a full rotation until synchronized, this function is blocking
+    uint16_t pevious_speed = target_speed;
     target_speed = SYNC_SPEED;
+    rot_counter = 0;
     move_n_pulses(USTEPS_PER_REVOLUTION);
     while(currently_moving){
         if(synchronized){
             stop();
-            target_speed = current_speed;
-            return;
+            target_speed = pevious_speed;
+            return true;
         }
     }
-    target_speed = current_speed;
+    target_speed = pevious_speed;
+    return false;
 }
 
-uint8_t SC_Motor::move_n_pulses(uint32_t pulses){
+void SC_Motor::move_n_pulses(uint32_t pulses){
     target_counter = pulse_counter + (pulses * rot_direction);
     digitalWrite(dir_pin, (uint8_t)rot_direction+1);
     digitalWrite(nEnable_pin, LOW);
     currently_moving = true;
+    moving_infinitely = false;
     step_timer->resume();
 }
 
-uint8_t SC_Motor::move_to_heading(uint32_t heading_mdegrees, uint8_t mode){
+void SC_Motor::move_to_heading(uint32_t heading_mdegrees, uint8_t mode){
     /* 
         move motor to a specific heading
         modes: 
@@ -116,39 +122,49 @@ void SC_Motor::timer_period_callback(){
 
     // increase /decrease pulse counter
     if(pulse_counter == 0 && rot_direction == CCW){
+        //underflow
         pulse_counter = USTEPS_PER_REVOLUTION;
-    }else if(pulse_counter == USTEPS_PER_REVOULTION && rot_direction == CW){
+        rot_counter--;
+    }else if(pulse_counter == USTEPS_PER_REVOLUTION && rot_direction == CW){
+        //overflow
         pulse_counter = 0;
+        rot_counter++;
     }else{
         pulse_counter += rot_direction; 
     }
+
+    if(moving_infinitely) return;
 
     int delta_pulses = abs(target_counter - pulse_counter);
     // terminate movement if target reached
     if(delta_pulses == 0){
         step_timer->pause();
         digitalWrite(nEnable_pin, HIGH);
-        current_speed = 0;
         currently_moving = false;
     }
-    // adjust speed if needed
-    // check if deceleration is necessary
-    uint16_t current_speed = freq2rpm(step_timer->setOverflow(HERTZ_FORMAT))
-    uint8_t acc_steps_pending = (delta_pulses / USTEPS_PER_ACC_STEP); // acceleration steps left until speed must be 0;
-    uint16_t max_speed = ACCELERATION * (acc_steps_pending+1); //max allowed speed for this acc step
+
+    // Speed Control    
+    uint16_t current_speed = get_current_speed();
+    // check max allowed speed for this delta
+    uint16_t max_speed = (delta_pulses * ACCELERATION) + 1;
     if(current_speed > max_speed){
-        step_timer->setOverflow(rpm2freq(current_speed), HERTZ_FORMAT);
+        //decelerate
+        uint16_t new_speed=(current_speed>ACCELERATION)? current_speed-ACCELERATION : 1;
+        step_timer->setOverflow(rpm2freq(new_speed));
+        return;
+    } 
+    if(current_speed < target_speed){
+        //accelerate
+        uint16_t new_speed=(current_speed+ACCELERATION>target_speed)? target_speed : current_speed+ACCELERATION;
+        step_timer->setOverflow(rpm2freq(new_speed));
         return;
     }
-    //check if acceleration is applicable
-    if(cu)
-    
 
 }
 
-uint16_t rpm2freq(uint16_t rpm){
-    return (uint16_t)((rpm * USTEPS_PER_REVOLUTION) / 60)
+uint16_t SC_Motor::rpm2freq(uint16_t rpm){
+    return (uint16_t)((rpm * USTEPS_PER_REVOLUTION) / 60);
 }
-uint16_t freq2rpm(uint32_t freq){
-    return (uint16_t)((freq * 60) / USTEPS_PER_REVOLUTION)
+uint16_t SC_Motor::freq2rpm(uint32_t freq){
+    return (uint16_t)((freq * 60) / USTEPS_PER_REVOLUTION);
 }
