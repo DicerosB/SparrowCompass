@@ -28,7 +28,7 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8
     step_timer->setOverflow(5000, HERTZ_FORMAT);
     step_timer->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, step_pin);
     step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT);
-    step_timer->attachInterrupt(timer_period_callback); 
+    step_timer->attachInterrupt(callback_helper); 
     synchronize();
 }
 
@@ -167,4 +167,8 @@ uint16_t SC_Motor::rpm2freq(uint16_t rpm){
 }
 uint16_t SC_Motor::freq2rpm(uint32_t freq){
     return (uint16_t)((freq * 60) / USTEPS_PER_REVOLUTION);
+}
+
+void callback_helper(){
+    motor->timer_period_callback();
 }

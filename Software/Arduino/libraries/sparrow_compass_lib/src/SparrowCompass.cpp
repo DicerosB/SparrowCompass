@@ -1,5 +1,9 @@
 #include "SparrowCompass.h"
 
+// global module pointer definitions
+ SC_Motor *motor = nullptr;
+ SC_Magnetometer *magnetometer = nullptr;
+
 SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
   :
   i2c(p_i2c),

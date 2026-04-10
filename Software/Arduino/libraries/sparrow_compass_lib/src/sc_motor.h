@@ -18,13 +18,14 @@ extern "C" {
 
 
 
+
 class SC_Motor{
   public:
   SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin);
   // Low Level Motor Control
   void set_speed(uint16_t rpm);
   uint16_t get_speed();
-  static uint16_t get_current_speed();
+  uint16_t get_current_speed();
   void set_direction_cw();
   void set_direction_ccw();
   bool get_direction();
@@ -37,27 +38,30 @@ class SC_Motor{
   void move_n_pulses(uint32_t pulses);
   void move_to_heading(uint32_t heading_mdegrees, uint8_t mode=0x03);
 
-
+  // Interrupt callbacks
+  void sync_callback();
+  void timer_period_callback();
+  
   //utils
-  static uint16_t rpm2freq(uint16_t rpm);
-  static uint16_t freq2rpm(uint32_t rpm);
+  uint16_t rpm2freq(uint16_t rpm);
+  uint16_t freq2rpm(uint32_t rpm);
 
   private:
-  static HardwareTimer *step_timer;
-  static uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
+  HardwareTimer *step_timer;
+  uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
 
-  static uint16_t target_speed;
-  static int8_t rot_direction;
-  static int32_t rot_counter;
-  static volatile bool synchronized;
-  static bool currently_moving, moving_infinitely;
-  static volatile uint16_t pulse_counter;
-  static uint16_t target_counter;
-
-  // Interrupt callbacks
-  static void sync_callback();
-  static void timer_period_callback();
+  uint16_t target_speed;
+  int8_t rot_direction;
+  int32_t rot_counter;
+  volatile bool synchronized;
+  bool currently_moving, moving_infinitely;
+  volatile uint16_t pulse_counter;
+  uint16_t target_counter;
+  
 };
+
+extern SC_Motor *motor;
+void callback_helper();
 
 #ifdef __cplusplus
 }

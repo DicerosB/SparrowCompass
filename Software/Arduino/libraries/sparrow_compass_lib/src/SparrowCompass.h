@@ -59,7 +59,9 @@ const String hello_world_message = F(
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+// static pointer
+extern SC_Motor *motor;
+extern SC_Magnetometer *magnetometer;
 class SparrowCompass{
   public:
   
@@ -72,8 +74,6 @@ class SparrowCompass{
   uint32_t loopcounter;
   TwoWire *i2c;
   USBSerial *usb;
-  static SC_Motor* motor;
-  static SC_Magnetometer* magnetometer;
 
   void switch_to_bootloader();
   void scan_for_modules();
