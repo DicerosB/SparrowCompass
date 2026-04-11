@@ -28,6 +28,9 @@ void SparrowCompass::begin(){
   if(mag_module){
     *usb << "magnetometer ID:" << magnetometer->get_id() << "\n";
   }
+  if(mot_module){
+    //motor->synchronize();
+  }
 }
 
 void SparrowCompass::work(){
@@ -45,8 +48,12 @@ void SparrowCompass::work(){
   }
 
   digitalWrite(DEBUG_LED_Pin, 0);
+  motor->set_direction_cw();
+  motor->move_n_pulses(2000);
   delay(2000);
   digitalWrite(DEBUG_LED_Pin, 1);
+  motor->set_direction_ccw();
+  motor->move_n_pulses(2000);
   delay(2000);
   
   loopcounter++;

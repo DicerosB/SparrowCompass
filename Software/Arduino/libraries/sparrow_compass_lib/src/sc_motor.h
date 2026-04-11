@@ -45,9 +45,10 @@ class SC_Motor{
   //utils
   uint16_t rpm2freq(uint16_t rpm);
   uint16_t freq2rpm(uint32_t rpm);
-
-  private:
   HardwareTimer *step_timer;
+  
+  private:
+  
   uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
 
   uint16_t target_speed;
