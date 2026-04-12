@@ -49,11 +49,13 @@ void SparrowCompass::work(){
 
   digitalWrite(DEBUG_LED_Pin, 0);
   motor->set_direction_cw();
-  motor->move_n_pulses(2000);
+  motor->move_inf();
+  *usb << motor->get_rotation_counter() << " rot " << motor->get_pulse_counter() << "pulses\n";
   delay(2000);
   digitalWrite(DEBUG_LED_Pin, 1);
   motor->set_direction_ccw();
-  motor->move_n_pulses(2000);
+  motor->move_inf();
+  *usb << motor->get_rotation_counter() << " rot " << motor->get_pulse_counter() << "pulses\n";
   delay(2000);
   
   loopcounter++;

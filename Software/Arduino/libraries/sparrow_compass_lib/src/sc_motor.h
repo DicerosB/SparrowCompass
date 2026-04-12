@@ -29,6 +29,8 @@ class SC_Motor{
   void set_direction_cw();
   void set_direction_ccw();
   bool get_direction();
+  uint32_t get_pulse_counter();
+  uint32_t get_rotation_counter();
   bool is_moving();
   void move_inf(); // start rotating infinitely
   void stop(); // stop rotation
@@ -40,13 +42,15 @@ class SC_Motor{
 
   // Interrupt callbacks
   void sync_callback();
-  void timer_period_callback();
-  
+  void step_timer_period_callback();
+  void speed_timer_period_callback();
+
   //utils
   uint16_t rpm2freq(uint16_t rpm);
   uint16_t freq2rpm(uint32_t rpm);
   HardwareTimer *step_timer;
-  
+  HardwareTimer *speed_timer;
+
   private:
   
   uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
@@ -62,7 +66,8 @@ class SC_Motor{
 };
 
 extern SC_Motor *motor;
-void callback_helper();
+void step_callback_helper();
+void speed_callback_helper();
 
 #ifdef __cplusplus
 }
