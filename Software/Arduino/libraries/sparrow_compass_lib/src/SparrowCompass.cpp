@@ -34,30 +34,12 @@ void SparrowCompass::begin(){
 }
 
 void SparrowCompass::work(){
-  *usb << "working.\n";
-  // handle USB input
-  if(usb->available()){
-    String buffer = usb->readString();
-    buffer.replace("\n", "");
-    buffer.replace("\r", "");
-    if(buffer == "deadbeef"){
-      switch_to_bootloader();
-    }else{
-      *usb << buffer << "\n";
-    }
-  }
+  handle_usb();
 
-  digitalWrite(DEBUG_LED_Pin, 0);
-  motor->set_direction_cw();
-  motor->move_inf();
-  *usb << motor->get_rotation_counter() << " rot " << motor->get_pulse_counter() << "pulses\n";
-  delay(2000);
-  digitalWrite(DEBUG_LED_Pin, 1);
-  motor->set_direction_ccw();
-  motor->move_inf();
-  *usb << motor->get_rotation_counter() << " rot " << motor->get_pulse_counter() << "pulses\n";
-  delay(2000);
-  
+  //digitalWrite(DEBUG_LED_Pin, 1);
+  //delay(1000);
+  //digitalWrite(DEBUG_LED_Pin, 0);
+  delay(1000);
   loopcounter++;
 }
 
@@ -66,7 +48,7 @@ void SparrowCompass::init_modules(){
     #ifdef VERBOSE_OUTPUT
     *usb << "Initialising Motor.\n";
     #endif
-    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin);
+    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, usb);
     *usb << "Initialised Motor.\n";
   }
   if(mag_module){
@@ -97,6 +79,44 @@ void SparrowCompass::setup_usb(){
   while(!*usb){
     delay(100);
     if(millis() > timeout) break; // no usb connected
+  }
+}
+void SparrowCompass::handle_usb(){
+  // handle USB input
+  if(usb->available()){
+    String buffer = usb->readString();
+    buffer.replace("\n", "");
+    buffer.replace("\r", "");
+
+
+    if(buffer == "deadbeef"){
+      switch_to_bootloader();
+    }
+    else if(buffer == "h" || buffer == "help"){
+      *usb << "----------------------------------\n" \
+      << " avaliable commands:\n\n" \
+      << "help, h\t\t| show this help text.\n" \
+      << "deadbeef\t| enter boot mode for DFU.\n" \
+      << "mv CC SS HHHH\t| move motor\n" \
+      << "\t\t  C: control byte\n" \
+      << "\t\t  S: speed byte\n" \
+      << "\t\t  H: heading bytes\n" \
+      << "----------------------------------\n\n";
+    }
+    else if(buffer.startsWith("mv ") && buffer.length() == 13){
+      uint8_t control = strtol(buffer.substring(3,5).c_str(), NULL, 16);
+      uint8_t speed = strtol(buffer.substring(6, 8).c_str(), NULL, 16);
+      uint16_t heading = strtol(buffer.substring(9).c_str(), NULL, 16);
+      *usb << "moving motor to "<< heading <<" with "<< speed <<" rpm.\n";
+      motor->move(control, speed, heading);
+    }
+    else if(buffer == "stp"){
+      motor->stop();
+      *usb << "stopped motor\n";
+    }
+    else{ // echo
+      *usb << buffer << "\n";
+    }
   }
 }
 

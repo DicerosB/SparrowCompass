@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 
+#include "Streaming.h"
+#define DEBUG_LED_Pin PC13
+
 // motor independent defines
 #define CW 0
 #define CCW 1
@@ -28,7 +31,7 @@ typedef uint32_t mot_instruction_t; // MSB <|  control | speed | heading_msb | h
 
 class SC_Motor{
   public:
-  SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin);
+  SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin, USBSerial* p_usb);
   
   uint16_t get_heading();
   bool is_moving();
@@ -50,13 +53,15 @@ class SC_Motor{
   HardwareTimer *step_timer;
   HardwareTimer *speed_timer;
 
+  USBSerial *usb;
+
   private:
   
   uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
 
   uint8_t target_speed; // in rounds per minute
   bool rot_direction; // 0: CW 1:CCW
-  uint16_t target_heading; // 0..0xFFFF mapped to one full rotation
+  uint16_t target_counter; // 0..0xFFFF mapped to one full rotation
 
   volatile uint16_t pulse_counter;
   volatile bool synchronized;

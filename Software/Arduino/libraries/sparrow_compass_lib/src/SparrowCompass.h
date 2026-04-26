@@ -49,10 +49,10 @@
 
 extern int _bflag;
 const String hello_world_message = F(
-  "\n~~~~~ Sparrow Compass ~~~~~~~\n "
-  "Arduino Library\n"
-  "Project Version: " PROJECT_VERSION "\n"
-  "Author: " PROJECT_AUTHOR
+  "\n~~~~~ Sparrow Compass ~~~~~~~\n"
+  " Arduino Library\n"
+  " Project Version: " PROJECT_VERSION "\n"
+  " Author: " PROJECT_AUTHOR
   "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
   
 
@@ -81,6 +81,7 @@ class SparrowCompass{
   void setup_usb();
   void hw_init();
   void init_modules();
+  void handle_usb();
 };
 
 #ifdef __cplusplus
