@@ -59,7 +59,8 @@ const String hello_world_message = F(
 #ifdef __cplusplus
 extern "C" {
 #endif
-// static pointer
+
+// global pointer
 extern SC_Motor *motor;
 extern SC_Magnetometer *magnetometer;
 class SparrowCompass{
