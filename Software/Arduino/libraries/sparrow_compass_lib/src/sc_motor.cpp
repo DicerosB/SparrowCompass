@@ -59,17 +59,19 @@ void SC_Motor::move(uint8_t control, uint8_t speed, uint16_t heading){
     if(!speed) return; // speed must not be 0.
 
     // calculate target counter
-    target_counter = (heading<<9)/HEADING_FRACTIONS_PER_MICROSTEP_Q9;
-    target_speed = speed;
+    target_counter = ((uint32_t)heading<<9)/HEADING_FRACTIONS_PER_MICROSTEP_Q9;
+    target_rpm = speed;
     rot_direction = control >> 7;
     if((control&0x20)>>5){
         //calculate rot_direction for shortest movement
         rot_direction = (uint16_t)(target_counter - pulse_counter) > 0xEFFF;
     }
+    moving_infinitely = (control&0x40)>>5;
+    *usb << "target pulse counter: " << target_counter << ", turning "<< (moving_infinitely?"infinitely ":"") << (rot_direction? "ccw\n":"cw\n");
+
     digitalWrite(dir_pin, rot_direction); // set dir pin
     digitalWrite(nEnable_pin, LOW); // enable motor
     currently_moving = true;
-    moving_infinitely = (control&0x20)>>5;
     step_timer->resume();   // continue PWM generation
     speed_timer->resume();
 }
@@ -77,6 +79,7 @@ void SC_Motor::move(uint8_t control, uint8_t speed, uint16_t heading){
 void SC_Motor::stop(){
     // stop as fast as possible
     if(!currently_moving) return;
+    moving_infinitely = false;
     // count eval periods needed for full stop
     uint16_t speed = step_timer->getOverflow(HERTZ_FORMAT);
     uint16_t v = 0;
@@ -104,6 +107,16 @@ void SC_Motor::step_timer_period_callback(){
         gets called each pulse
         keeps track of current rotational position,
     */
+
+    // stop if target reached
+    if(!moving_infinitely && pulse_counter == target_counter){
+        step_timer->pause();
+        speed_timer->pause();
+        *usb << "target reached at " << pulse_counter <<".\n";
+        digitalWrite(nEnable_pin, HIGH);
+        currently_moving = false;
+    }
+
     // catch over/ underflow
     if(!rot_direction && pulse_counter == USTEPS_PER_REVOLUTION-1){
         pulse_counter = 0;
@@ -114,15 +127,6 @@ void SC_Motor::step_timer_period_callback(){
     }
     else{
         pulse_counter += 1 - (2* rot_direction); // increment / decrement according to rot_direction
-    }
-
-    // stop if target reached
-    if(!moving_infinitely && pulse_counter == target_counter){
-        step_timer->pause();
-        speed_timer->pause();
-        *usb << "target reached at " << pulse_counter <<".\n";
-        digitalWrite(nEnable_pin, HIGH);
-        currently_moving = false;
     }
 
 }
@@ -151,7 +155,7 @@ void SC_Motor::speed_timer_period_callback(){
     uint16_t v = 0;
     uint16_t d = 0;
     uint16_t periods= 0;
-    while(v <= speed){
+    while(v <= speed && !moving_infinitely){
         periods++;
         v = (periods * MAX_ACCELERATION_PER_EVAL_T_Q8) >> 8; // Steps/s
         d += v / SPEED_EVAL_FREQ;
@@ -166,12 +170,12 @@ void SC_Motor::speed_timer_period_callback(){
     }
     
     // determine if acceleration is allowed
-    uint16_t target_f = (target_speed * RPM_CONVERSION_FACTOR_Q8) >> 8;
+    uint16_t target_f = ((uint32_t)target_rpm * RPM_HZ_CONVERSION_FACTOR_Q8) >> 8;
     if(speed < target_f){
-        speed += MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8;
-        if(speed > target_speed)speed = target_f;
+        speed += (MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8);
+        if(speed > target_f)speed = target_f;
         step_timer->setOverflow(speed, HERTZ_FORMAT);
-        *usb << "a ";
+        *usb << "a " << (MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8);
     }
     *usb << "\n";
     digitalWrite(DEBUG_LED_Pin, LOW);
