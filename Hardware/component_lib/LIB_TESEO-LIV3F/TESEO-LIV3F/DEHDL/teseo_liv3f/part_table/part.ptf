@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'TESEO_LIV3F'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "FARNELL_PART_NUMBER", "FARNELL_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT", "TJ", "MTBF", "POWER", "SLOPE", "SUBTYPE", "PACKAGE", "RJA", "VCC_MAX", "VCC_MIN", "IOUT_MAX", "IOUT_MIN", "ICC", "IGND", "RCA", "RJC", "ICCQ", "TECHNOLOGY";
+{========================================================================================}
+ "STMicroelectronics", "TESEO-LIV3F" (!) = "", "SON110P970X1010X230-18N", "Small Outline No-lead", "", "", "GPS Modules Tiny GNSS module", "https://www.st.com/resource/en/datasheet/teseo-liv3f.pdf", "2.3 mm", "85", "", "90m", "", "TINY GNSS MODULE SMD", "LCC-18", "", "", "", "", "", "", "", "", "", "", ""
+END_PART
+
+END.

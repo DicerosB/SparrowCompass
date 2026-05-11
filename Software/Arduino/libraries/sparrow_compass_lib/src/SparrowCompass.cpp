@@ -39,7 +39,15 @@ void SparrowCompass::work(){
   //digitalWrite(DEBUG_LED_Pin, 1);
   //delay(1000);
   //digitalWrite(DEBUG_LED_Pin, 0);
-  delay(1000);
+  digitalWrite(MOT_nEnable_Pin, LOW);
+  for(int i = 0; i < 6400; i++){
+    digitalWrite(MOT_STEP_Pin, HIGH);
+    delayMicroseconds(2000);
+    digitalWrite(MOT_STEP_Pin, LOW);
+    delayMicroseconds(2000);
+  }
+  digitalWrite(MOT_nEnable_Pin, HIGH);
+  delay(10000);
   loopcounter++;
 }
 
@@ -48,7 +56,7 @@ void SparrowCompass::init_modules(){
     #ifdef VERBOSE_OUTPUT
     *usb << "Initialising Motor.\n";
     #endif
-    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, usb);
+    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, MOT_SENS_B_Pin, usb);
     *usb << "Initialised Motor.\n";
   }
   if(mag_module){
@@ -65,6 +73,10 @@ void SparrowCompass::hw_init(){
 
   digitalWrite(GPS_nReset_Pin, HIGH);
   digitalWrite(MOT_nEnable_Pin, HIGH);
+
+  //debug
+  pinMode(MOT_STEP_Pin, OUTPUT);
+  pinMode(MOT_nEnable_Pin, OUTPUT);
 }
 
 void SparrowCompass::setup_usb(){

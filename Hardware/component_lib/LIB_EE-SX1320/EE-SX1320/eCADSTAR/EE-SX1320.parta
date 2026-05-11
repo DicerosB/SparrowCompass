@@ -1,0 +1,73 @@
+(Japanese_coding: sjis)
+(function "ECS_788450"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-23-11:32:58)
+    (utime 2024-03-14-08:14:51)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+        (port "3" (symbPinId 3) (portType INOUT))
+        (port "4" (symbPinId 4) (portType INOUT))
+    )
+    (property "symbolName" "EE-SX1320")
+)
+
+
+(pinAssign "ECS_788450"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-23-11:32:58)
+    (utime 2024-03-14-08:14:51)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+        (port "3" (symbPinId 3) (portName "3") (portType INOUT))
+        (port "4" (symbPinId 4) (portName "4") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_788450")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+                (port "3" (match "3"))
+                (port "4" (match "4"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "EE-SX1320")
+)
+
+
+(part "EE-SX1320"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-23-11:32:58)
+    (utime 2024-03-14-08:14:51)
+    (packageRef "EE-SX1320")
+    (pinAssignRef "ECS_788450")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+        (port "3" (symbPinId 3) (portName "3") (portType INOUT))
+        (port "4" (symbPinId 4) (portName "4") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "YES")
+    (property "refDesPrefix" "IC")
+    (property "description" "Optical Switches, Transmissive, Phototransistor Output SMT, 2mm Transmissive Photo")
+    (property "Mouser_Part_Number" "653-EESX1320")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Omron-Electronics/EE-SX1320?qs=D%252BXMYtqGEfctDBBegrcKKA%3D%3D")
+    (property "Manufacturer_Name" "OMRON Electronics")
+    (property "Manufacturer_Part_Number" "EE-SX1320")
+    (property "Datasheet_Link" "https://www.omron.com/ecb/products/pdf/en-ee_sx1320.pdf")
+)
+
+

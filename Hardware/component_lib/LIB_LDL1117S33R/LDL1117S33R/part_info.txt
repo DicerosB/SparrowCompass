@@ -1,0 +1,9 @@
+Manufacturer=STMicroelectronics
+PartNumber=LDL1117S33R
+PartCategory=Integrated Circuit
+PackageCategory=SOT223 (3-Pin)
+PinCount=4
+Version=3.1
+Released=2017-10-09 12:00:28
+Downloaded=2026-05-09 00:44:56
+3D=Y

@@ -9,12 +9,12 @@
 // motor independent defines
 #define CW 0
 #define CCW 1
-#define SPEED_EVAL_FREQ 20 // Rate at which motor speed is adjusted for acceleration control
+#define SPEED_EVAL_FREQ 50 // Rate (Hz) at which motor speed is adjusted for acceleration control
 
 // motor specific defines
 #define MICROSTEPPING 32
 #define STEPS_PER_REVOLUTION 200
-#define MAX_ACCELERATION 400 // Hz/s
+#define MAX_ACCELERATION 8000 // Hz/s
 
 // calculations
 #define MAX_ACCELERATION_PER_EVAL_T_Q8 ((MAX_ACCELERATION << 8) / SPEED_EVAL_FREQ) // 6400 (>> 8 = 25 Hz/50ms )
@@ -31,7 +31,7 @@ typedef uint32_t mot_instruction_t; // MSB <|  control | speed | heading_msb | h
 
 class SC_Motor{
   public:
-  SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin, USBSerial* p_usb);
+  SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin_a, uint8_t sync_pin_b, USBSerial* p_usb);
   
   uint16_t get_heading();
   bool is_moving();
@@ -57,7 +57,7 @@ class SC_Motor{
 
   private:
   
-  uint8_t nEnable_pin, step_pin, dir_pin, sync_pin;
+  uint8_t nEnable_pin, step_pin, dir_pin, sync_pin_a, sync_pin_b;
 
   uint8_t target_rpm; // in rounds per minute
   bool rot_direction; // 0: CW 1:CCW
@@ -66,6 +66,7 @@ class SC_Motor{
   volatile uint16_t pulse_counter;
   volatile bool synchronized;
   bool currently_moving, moving_infinitely;
+  void set_pwm_f(uint16_t speed_hz);
   
 };
 

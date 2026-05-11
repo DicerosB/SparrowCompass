@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "LGA-24L_3X3_5X1MM_"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "LGA-24L_3X3_5X1MM_")
+        (spec "default")
+    )
+)

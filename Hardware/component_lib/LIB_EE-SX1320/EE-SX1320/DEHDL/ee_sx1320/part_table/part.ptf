@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'EE_SX1320'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "DESCRIPTION", "DATASHEET";
+{========================================================================================}
+ "OMRON Electronics", "EE-SX1320" (!) = "", "EE-SX1320", "Other", "653-EESX1320", "https://www.mouser.co.uk/ProductDetail/Omron-Electronics/EE-SX1320?qs=D%252BXMYtqGEfctDBBegrcKKA%3D%3D", "Optical Switches, Transmissive, Phototransistor Output SMT, 2mm Transmissive Photo", "https://www.omron.com/ecb/products/pdf/en-ee_sx1320.pdf"
+END_PART
+
+END.

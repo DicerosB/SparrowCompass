@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "EE-SX1320"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "EE-SX1320")
+        (spec "default")
+    )
+)

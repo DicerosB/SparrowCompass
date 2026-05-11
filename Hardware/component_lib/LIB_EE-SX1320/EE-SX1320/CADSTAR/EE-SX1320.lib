@@ -1,0 +1,16 @@
+.EE-SX1320 :1 ;Optical Switches, Transmissive, Phototransistor Output SMT, 2mm Transmissive Photo
+EE-SX1320
+*STM IC
+*NGS
+*PLB 1="1" 2="2" 3="3" 4="4"
+*MXP 4
+*DFN EE-SX1320
+~!Mouser Part Number (653-EESX1320)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Omron-Electronics/EE-SX1320?qs=D%252BXMYtqGEfctDBBegrcKKA%3D%3D)
+~!Manufacturer_Name (OMRON Electronics)
+~!Manufacturer_Part_Number (EE-SX1320)
+~!Link Datasheet (https://www.omron.com/ecb/products/pdf/en-ee_sx1320.pdf)
+~!Height (-)
+~!3D_Model (EE-SX1320)
+EE-SX1320
+1.1!U 2.1!U 3.1!U 4.1!U 

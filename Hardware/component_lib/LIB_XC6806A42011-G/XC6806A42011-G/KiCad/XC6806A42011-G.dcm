@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP XC6806A42011-G
+D Battery Charger Li-Ion/Li-Pol Single Cell 385mA 4.2V 10-Pin LGA-B01 T/R
+K
+F https://www.torexsemi.com/file/xc6806/XC6806.pdf
+$ENDCMP
+#
+#End Doc Library

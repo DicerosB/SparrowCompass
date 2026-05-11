@@ -1,0 +1,9 @@
+Manufacturer=Torex
+PartNumber=XC6806A42011-G
+PartCategory=Integrated Circuit
+PackageCategory=Other
+PinCount=10
+Version=1.6
+Released=2021-09-08 10:53:57
+Downloaded=2026-05-08 23:09:00
+3D=Y

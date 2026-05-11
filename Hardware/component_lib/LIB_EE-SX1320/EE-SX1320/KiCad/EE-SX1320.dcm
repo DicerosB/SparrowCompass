@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP EE-SX1320
+D Optical Switches, Transmissive, Phototransistor Output SMT, 2mm Transmissive Photo
+K
+F https://www.omron.com/ecb/products/pdf/en-ee_sx1320.pdf
+$ENDCMP
+#
+#End Doc Library

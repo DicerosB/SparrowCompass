@@ -1,0 +1,16 @@
+.TESEO-LIV3F :1 ;GPS Modules Tiny GNSS module
+SON110P970X1010X230-18N
+*STM IC
+*NGS
+*PLB 1="GND" 2="TX" 3="RX" 4="1PPS" 5="WAKE-UP" 6="VBATT" 7="VCC_IO" 8="VCC" 9="SYS_RSTN" 10="GND_RF_1" 11="RF_IN" 12="GND_RF_2" 13="ANT_OFF" 14="VCC_RF" 15="RESERVED_1" 16="SDA" 17="SCL" 18="RESERVED_2"
+*MXP 18
+*DFN TESEO-LIV3F
+~!Farnell Part Number (-)
+~!Farnell Price/Stock (-)
+~!Manufacturer_Name (STMicroelectronics)
+~!Manufacturer_Part_Number (TESEO-LIV3F)
+~!Link Datasheet (https://www.st.com/resource/en/datasheet/teseo-liv3f.pdf)
+~!Height (2.3mm)
+~!3D_Model (TESEO-LIV3F)
+TESEO-LIV3F
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 7.1!U 8.1!U 9.1!U 18.1!U 17.1!U 16.1!U 15.1!U 14.1!U 13.1!U 12.1!U 11.1!U 10.1!U 

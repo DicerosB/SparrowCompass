@@ -1,0 +1,9 @@
+Manufacturer=STMicroelectronics
+PartNumber=TESEO-LIV3F
+PartCategory=Integrated Circuit
+PackageCategory=Small Outline No-lead
+PinCount=18
+Version=3.1
+Released=2018-12-27 09:24:10
+Downloaded=2026-05-08 21:40:20
+3D=Y

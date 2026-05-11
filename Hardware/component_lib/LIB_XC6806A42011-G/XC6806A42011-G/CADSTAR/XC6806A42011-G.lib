@@ -1,0 +1,16 @@
+.XC6806A42011-G :1 ;Battery Charger Li-Ion/Li-Pol Single Cell 385mA 4.2V 10-Pin LGA-B01 T/R
+XC6806A42011G
+*STM IC
+*NGS
+*PLB 1="VIN" 2="ISET" 3="THIN" 4="VREG" 5="PGB" 6="CSO" 7="VSS" 8="SD" 9="BAT" 10="OUT"
+*MXP 10
+*DFN XC6806A42011-G
+~!Farnell Part Number (-)
+~!Farnell Price/Stock (-)
+~!Manufacturer_Name (Torex)
+~!Manufacturer_Part_Number (XC6806A42011-G)
+~!Link Datasheet (https://www.torexsemi.com/file/xc6806/XC6806.pdf)
+~!Height (0.4mm)
+~!3D_Model (XC6806A42011-G)
+XC6806A42011-G
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 7.1!U 8.1!U 9.1!U 10.1!U 

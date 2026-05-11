@@ -1,0 +1,9 @@
+Manufacturer=OMRON Electronics
+PartNumber=EE-SX1320
+PartCategory=Integrated Circuit
+PackageCategory=Other
+PinCount=4
+Version=1.1
+Released=2017-06-23 11:32:58
+Downloaded=2026-05-08 16:11:17
+3D=Y

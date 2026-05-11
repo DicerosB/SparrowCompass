@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "LSM9DS1TR"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2018-07-03-13:11:05)
+    (mountForm default
+        (footprintRef "LGA-24L_3X3_5X1MM_")
+        (spec "System")
+    )
+)

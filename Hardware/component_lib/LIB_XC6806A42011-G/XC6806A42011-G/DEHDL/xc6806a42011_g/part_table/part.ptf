@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'XC6806A42011_G'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "FARNELL_PART_NUMBER", "FARNELL_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Torex", "XC6806A42011-G" (!) = "", "XC6806A42011G", "Other", "", "", "Battery Charger Li-Ion/Li-Pol Single Cell 385mA 4.2V 10-Pin LGA-B01 T/R", "https://www.torexsemi.com/file/xc6806/XC6806.pdf", "0.4 mm"
+END_PART
+
+END.

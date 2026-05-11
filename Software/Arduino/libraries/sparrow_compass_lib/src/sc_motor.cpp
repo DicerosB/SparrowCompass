@@ -1,11 +1,12 @@
 #include "sc_motor.h"
 
 
-SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin, USBSerial* p_usb):
+SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8_t sync_pin_a, uint8_t sync_pin_b, USBSerial* p_usb):
     nEnable_pin(nEnable_pin),
     step_pin(step_pin),
     dir_pin(dir_pin),
-    sync_pin(sync_pin),
+    sync_pin_a(sync_pin_a),
+    sync_pin_b(sync_pin_b),
     usb(p_usb),
     pulse_counter(0),
     rot_direction(CW),
@@ -17,15 +18,15 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8
     //GPIO config
     pinMode(nEnable_pin, OUTPUT);
     pinMode(dir_pin, OUTPUT);
-    pinMode(sync_pin, INPUT);
+    pinMode(sync_pin_a, INPUT_PULLUP);
+    pinMode(sync_pin_b, INPUT_PULLUP);
 
     digitalWrite(nEnable_pin, HIGH);
     digitalWrite(dir_pin, LOW);
     // Timer Init
     step_timer = new HardwareTimer(TIM10);
-    step_timer->setOverflow((MAX_ACCELERATION_PER_EVAL_T_Q8>>8), HERTZ_FORMAT);   // initial frequency
+    set_pwm_f(MAX_ACCELERATION_PER_EVAL_T_Q8>>8);// initial frequency
     step_timer->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, step_pin);    // ouput pin
-    step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT);   // 50% duty cycle
     step_timer->attachInterrupt(step_callback_helper);
     step_timer->pause();
 
@@ -34,6 +35,10 @@ SC_Motor::SC_Motor(uint8_t nEnable_pin, uint8_t step_pin, uint8_t dir_pin, uint8
     speed_timer->attachInterrupt(speed_callback_helper);
     speed_timer->pause();
     //synchronize();
+}
+void SC_Motor::set_pwm_f(uint16_t speed_hz){
+    step_timer->setOverflow(speed_hz, HERTZ_FORMAT);
+    step_timer->setCaptureCompare(1, 50, PERCENT_COMPARE_FORMAT); //ensure 50% duty cycle
 }
 
 uint16_t SC_Motor::get_heading(){
@@ -60,6 +65,7 @@ void SC_Motor::move(uint8_t control, uint8_t speed, uint16_t heading){
 
     // calculate target counter
     target_counter = ((uint32_t)heading<<9)/HEADING_FRACTIONS_PER_MICROSTEP_Q9;
+    if(target_counter == pulse_counter) return; // movement too small
     target_rpm = speed;
     rot_direction = control >> 7;
     if((control&0x20)>>5){
@@ -112,6 +118,7 @@ void SC_Motor::step_timer_period_callback(){
     if(!moving_infinitely && pulse_counter == target_counter){
         step_timer->pause();
         speed_timer->pause();
+        set_pwm_f(MAX_ACCELERATION_PER_EVAL_T_Q8>>8); // set pwm frequency to default
         *usb << "target reached at " << pulse_counter <<".\n";
         digitalWrite(nEnable_pin, HIGH);
         currently_moving = false;
@@ -136,19 +143,18 @@ void SC_Motor::speed_timer_period_callback(){
     *   gets called peroidically
     *   controls maximum ac-/ deceleration
     */
-    digitalWrite(DEBUG_LED_Pin, HIGH);
 
     //calculate rotational distance to target
     uint16_t distance = 0;
     if(!rot_direction){
         // clockwise rotation
-        distance = target_counter - pulse_counter;
+        distance = (target_counter - pulse_counter + USTEPS_PER_REVOLUTION) % USTEPS_PER_REVOLUTION;
     }else{
-        distance = pulse_counter - target_counter;
+        distance = (pulse_counter - target_counter + USTEPS_PER_REVOLUTION) % + USTEPS_PER_REVOLUTION;
     }
     
     uint16_t speed = step_timer->getOverflow(HERTZ_FORMAT); // steps per second
-    *usb << distance << " : " << speed << " ";
+    //*usb << distance << " : " << speed << " ";
     // determine if breaking is needed
 
     // count periods needed for full stop
@@ -159,12 +165,11 @@ void SC_Motor::speed_timer_period_callback(){
         periods++;
         v = (periods * MAX_ACCELERATION_PER_EVAL_T_Q8) >> 8; // Steps/s
         d += v / SPEED_EVAL_FREQ;
-        if( d > distance){
+        if( d >= distance){
             // breaking condition
-            *usb << "b\n";
-            step_timer->setOverflow(speed - (MAX_ACCELERATION_PER_EVAL_T_Q8>>8), HERTZ_FORMAT);
+            //*usb << "b\n";
+            set_pwm_f(speed - (MAX_ACCELERATION_PER_EVAL_T_Q8>>8));
             step_timer->refresh();
-            digitalWrite(DEBUG_LED_Pin, LOW);
             return;
         }
     }
@@ -174,11 +179,11 @@ void SC_Motor::speed_timer_period_callback(){
     if(speed < target_f){
         speed += (MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8);
         if(speed > target_f)speed = target_f;
-        step_timer->setOverflow(speed, HERTZ_FORMAT);
-        *usb << "a " << (MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8);
+        set_pwm_f(speed);
+        step_timer->refresh();
+        //*usb << "a " << (MAX_ACCELERATION_PER_EVAL_T_Q8 >> 8);
     }
-    *usb << "\n";
-    digitalWrite(DEBUG_LED_Pin, LOW);
+    //*usb << "\n";
     
 }
 

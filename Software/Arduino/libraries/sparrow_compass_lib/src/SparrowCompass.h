@@ -13,7 +13,7 @@
 #define DFU_BOOT_FLAG 0xDEADBEEF
 
 // enabled device modules
-#define ENABLE_MOTOR
+//#define ENABLE_MOTOR
 #define ENABLE_GYROSCOPE
 #define ENABLE_MAGNETOMETER
 #define ENABLE_ACCELEROMETER

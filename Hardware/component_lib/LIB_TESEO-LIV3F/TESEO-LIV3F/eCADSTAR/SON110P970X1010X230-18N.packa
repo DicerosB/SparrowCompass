@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "TESEO-LIV3F"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2023-06-22-02:40:16)
+    (mountForm default
+        (footprintRef "SON110P970X1010X230-18N")
+        (spec "System")
+    )
+)

@@ -1,0 +1,9 @@
+Manufacturer=STMicroelectronics
+PartNumber=LSM9DS1TR
+PartCategory=Integrated Circuit
+PackageCategory=Other
+PinCount=24
+Version=5.2
+Released=2017-11-23 17:14:59
+Downloaded=2026-05-08 16:43:01
+3D=Y

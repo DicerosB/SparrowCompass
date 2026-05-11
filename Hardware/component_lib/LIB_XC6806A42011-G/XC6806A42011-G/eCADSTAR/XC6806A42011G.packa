@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "XC6806A42011-G"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-09-08-10:53:57)
+    (mountForm default
+        (footprintRef "XC6806A42011G")
+        (spec "System")
+    )
+)
