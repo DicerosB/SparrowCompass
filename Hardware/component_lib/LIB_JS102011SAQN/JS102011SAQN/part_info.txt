@@ -1,0 +1,9 @@
+Manufacturer=LITTELFUSE
+PartNumber=JS102011SAQN
+PartCategory=Switch
+PackageCategory=Other
+PinCount=3
+Version=1.3
+Released=2026-04-25 09:55:56
+Downloaded=2026-05-13 00:34:22
+3D=Y

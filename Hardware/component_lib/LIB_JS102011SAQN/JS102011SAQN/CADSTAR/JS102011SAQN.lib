@@ -1,0 +1,16 @@
+.JS102011SAQN :1 ;Slide Switch SPDT Surface Mount, Right Angle 300mA (DC) 6V Gull Wing -40C ~ 85C
+JS102011SAQN
+*STM S
+*NGS
+*PLB 1="N.C." 2="COM" 3="N.O."
+*MXP 5
+*DFN JS102011SAQN
+~!Farnell Part Number (-)
+~!Farnell Price/Stock (-)
+~!Manufacturer_Name (LITTELFUSE)
+~!Manufacturer_Part_Number (JS102011SAQN)
+~!Link Datasheet (https://www.littelfuse.com/assetdocs/littelfuse-ck-slide-js-series-datasheet?assetguid=aba42b08-0d2c-423b-813d-a2faa5a3bb14)
+~!Height (3.5mm)
+~!3D_Model (JS102011SAQN)
+JS102011SAQN
+1.1!U 2.1!U 3.1!U 

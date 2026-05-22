@@ -42,9 +42,9 @@ void SparrowCompass::work(){
   digitalWrite(MOT_nEnable_Pin, LOW);
   for(int i = 0; i < 6400; i++){
     digitalWrite(MOT_STEP_Pin, HIGH);
-    delayMicroseconds(2000);
+    delayMicroseconds(200);
     digitalWrite(MOT_STEP_Pin, LOW);
-    delayMicroseconds(2000);
+    delayMicroseconds(200);
   }
   digitalWrite(MOT_nEnable_Pin, HIGH);
   delay(10000);

@@ -3,9 +3,9 @@
     "GenerationSoftware": {
       "Vendor": "KiCad",
       "Application": "Pcbnew",
-      "Version": "9.0.4"
+      "Version": "10.0.1"
     },
-    "CreationDate": "2025-09-22T08:36:52+02:00"
+    "CreationDate": "2026-05-20T22:50:06+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -14,8 +14,8 @@
       "Revision": "rev?"
     },
     "Size": {
-      "X": 72.05,
-      "Y": 94.05
+      "X": 56.05,
+      "Y": 75.05
     },
     "LayerNumber": 4,
     "BoardThickness": 1.6,
@@ -48,12 +48,12 @@
     },
     {
       "Path": "SparrowCompass-In1_Cu.gbr",
-      "FileFunction": "Copper,L5,Inr",
+      "FileFunction": "Copper,L2,Inr",
       "FilePolarity": "Positive"
     },
     {
       "Path": "SparrowCompass-In2_Cu.gbr",
-      "FileFunction": "Copper,L7,Inr",
+      "FileFunction": "Copper,L3,Inr",
       "FilePolarity": "Positive"
     },
     {
