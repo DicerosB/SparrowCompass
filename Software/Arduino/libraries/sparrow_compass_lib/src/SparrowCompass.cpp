@@ -26,7 +26,8 @@ void SparrowCompass::begin(){
 
   // module test
   if(mag_module){
-    *usb << "magnetometer ID:" << magnetometer->get_id() << "\n";
+    *usb << "magnetometer ID:";
+    *usb << magnetometer->get_id() << "\n";
   }
   if(mot_module){
     //motor->synchronize();
@@ -36,18 +37,14 @@ void SparrowCompass::begin(){
 void SparrowCompass::work(){
   handle_usb();
 
-  //digitalWrite(DEBUG_LED_Pin, 1);
-  //delay(1000);
-  //digitalWrite(DEBUG_LED_Pin, 0);
-  digitalWrite(MOT_nEnable_Pin, LOW);
-  for(int i = 0; i < 6400; i++){
-    digitalWrite(MOT_STEP_Pin, HIGH);
-    delayMicroseconds(200);
-    digitalWrite(MOT_STEP_Pin, LOW);
-    delayMicroseconds(200);
-  }
-  digitalWrite(MOT_nEnable_Pin, HIGH);
-  delay(10000);
+  digitalWrite(DEBUG_LED_Pin, 1);
+  *usb << "Status:" << magnetometer->get_status() << "\n";
+  int16_t data[3];
+  magnetometer->get_output(data);
+  *usb << "MAG X:" << data[0] << "\tMAG Y:" << data[1] << "\tMAG Z:" << data[2] << "\n";
+  delay(1000);
+  digitalWrite(DEBUG_LED_Pin, 0);
+  delay(1000);
   loopcounter++;
 }
 
@@ -64,7 +61,9 @@ void SparrowCompass::init_modules(){
     *usb << "Initialising Magnetometer.\n";
     #endif
     magnetometer = new SC_Magnetometer(i2c, I2C_ADR_MAGNETOMETER);
+    magnetometer->init();
   }
+  *usb << "Initialised Magnetometer.\n";
 }
 
 void SparrowCompass::hw_init(){
