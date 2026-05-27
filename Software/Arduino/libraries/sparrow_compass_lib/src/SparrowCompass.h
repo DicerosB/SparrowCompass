@@ -42,6 +42,8 @@
 
 // other config
 #define VERBOSE_OUTPUT
+#define MAIN_INTERVAL 10 // in ms
+#define BLINK_INTERVAL 1000 // in ms
 
 // project metadata
 #define PROJECT_VERSION "0.0.1"
@@ -63,6 +65,18 @@ extern "C" {
 // global pointer
 extern SC_Motor *motor;
 extern SC_Magnetometer *magnetometer;
+
+class Orientation{
+  public:
+  void plot(USBSerial* p_usb);
+  Orientation();
+  // raw sensor data
+  int16_t mag[3]; 
+  int16_t acc[3];
+  int16_t gyr[3];
+};
+
+
 class SparrowCompass{
   public:
   
@@ -72,7 +86,10 @@ class SparrowCompass{
 
   private:
   bool acc_module, gyr_module, mot_module, mag_module, gps_module;
-  uint32_t loopcounter;
+  bool plotting, automove;
+  uint32_t loopcounter, blink_interval_timer, main_interval_timer;
+  Orientation orientation;
+
   TwoWire *i2c;
   USBSerial *usb;
 

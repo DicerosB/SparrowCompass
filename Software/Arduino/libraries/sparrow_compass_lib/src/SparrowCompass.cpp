@@ -13,7 +13,9 @@ SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
   gyr_module(0),
   mot_module(0),
   mag_module(0),
-  gps_module(0)
+  gps_module(0),
+  plotting(0),
+  automove(0)
 {}
 
 void SparrowCompass::begin(){
@@ -32,20 +34,35 @@ void SparrowCompass::begin(){
   if(mot_module){
     //motor->synchronize();
   }
+  main_interval_timer = millis();
+  blink_interval_timer = millis();
 }
 
 void SparrowCompass::work(){
-  handle_usb();
 
-  digitalWrite(DEBUG_LED_Pin, 1);
-  *usb << "Status:" << magnetometer->get_status() << "\n";
-  int16_t data[3];
-  magnetometer->get_output(data);
-  *usb << "MAG X:" << data[0] << "\tMAG Y:" << data[1] << "\tMAG Z:" << data[2] << "\n";
-  delay(1000);
-  digitalWrite(DEBUG_LED_Pin, 0);
-  delay(1000);
-  loopcounter++;
+  uint32_t loop_time = millis();
+  uint16_t loop_duration = 0;
+
+  // main interval
+  if (loop_time - main_interval_timer > MAIN_INTERVAL){
+
+    handle_usb();
+    magnetometer->get_output(orientation.mag);
+    if(plotting){
+      orientation.plot(usb);
+    }
+
+    main_interval_timer = millis();
+  }
+
+  // blink interval
+  if (loop_time - blink_interval_timer > BLINK_INTERVAL){
+
+    digitalWrite(DEBUG_LED_Pin, !digitalRead(DEBUG_LED_Pin));
+
+    blink_interval_timer = millis();
+  }
+  loop_duration = millis() - loop_time;
 }
 
 void SparrowCompass::init_modules(){
@@ -55,6 +72,9 @@ void SparrowCompass::init_modules(){
     #endif
     motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, MOT_SENS_B_Pin, usb);
     *usb << "Initialised Motor.\n";
+  }else{
+    // ensure nEnabe is high!
+    pinMode(MOT_nEnable_Pin, INPUT_PULLUP);
   }
   if(mag_module){
     #ifdef VERBOSE_OUTPUT
@@ -62,8 +82,9 @@ void SparrowCompass::init_modules(){
     #endif
     magnetometer = new SC_Magnetometer(i2c, I2C_ADR_MAGNETOMETER);
     magnetometer->init();
+    *usb << "Initialised Magnetometer.\n";
   }
-  *usb << "Initialised Magnetometer.\n";
+
 }
 
 void SparrowCompass::hw_init(){
@@ -99,7 +120,7 @@ void SparrowCompass::handle_usb(){
     buffer.replace("\n", "");
     buffer.replace("\r", "");
 
-
+    // start decoding usb commands
     if(buffer == "deadbeef"){
       switch_to_bootloader();
     }
@@ -108,10 +129,13 @@ void SparrowCompass::handle_usb(){
       << " avaliable commands:\n\n" \
       << "help, h\t\t| show this help text.\n" \
       << "deadbeef\t| enter boot mode for DFU.\n" \
-      << "mv CC SS HHHH\t| move motor\n" \
+      << "mv CC SS HHHH\t| move needle\n" \
       << "\t\t  C: control byte\n" \
       << "\t\t  S: speed byte\n" \
       << "\t\t  H: heading bytes\n" \
+      << "stp\t\t| stop needle\n" \
+      << "resume\t\t| continue auto needle movement\n" \
+      << "plot\t\t| toggle plot mode\n" \
       << "----------------------------------\n\n";
     }
     else if(buffer.startsWith("mv ") && buffer.length() == 13){
@@ -124,6 +148,9 @@ void SparrowCompass::handle_usb(){
     else if(buffer == "stp"){
       motor->stop();
       *usb << "stopped motor\n";
+    }
+    else if(buffer == "plot"){
+      plotting = !plotting;
     }
     else{ // echo
       *usb << buffer << "\n";
@@ -203,4 +230,20 @@ void SparrowCompass::switch_to_bootloader(){
 	uint32_t* dfu_boot_flag = (uint32_t*)(&_bflag);
 	*dfu_boot_flag = DFU_BOOT_FLAG;
 	HAL_NVIC_SystemReset();
+}
+
+Orientation::Orientation(){
+}
+
+void Orientation::plot(USBSerial* p_usb){
+  uint8_t graph_counter = 0;
+  *p_usb << "MAG_X:" << mag[0] << ", ";
+  *p_usb << "MAG_Y:" << mag[1] << ", ";
+  *p_usb << "MAG_Z:" << mag[2] << ", ";
+  *p_usb << "ACC_X:" << acc[0] << ", ";
+  *p_usb << "ACC_Y:" << acc[1] << ", ";
+  *p_usb << "ACC_Z:" << acc[2] << ", ";
+  *p_usb << "GYR_X:" << gyr[0] << ", ";
+  *p_usb << "GYR_Y:" << gyr[1] << ", ";
+  *p_usb << "GYR_Z:" << gyr[2]<< "\n";
 }

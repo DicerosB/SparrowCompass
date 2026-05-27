@@ -45,10 +45,11 @@ class SC_Magnetometer{
   private:
   uint8_t address, status;
   TwoWire* i2c;
-  uint8_t read_single(uint8_t* buffer, uint8_t reg_addr);
-  uint8_t read_multiple(uint8_t* buffer, uint8_t start_reg_addr, uint8_t len);
-  uint8_t write_single(uint8_t data, uint8_t start_reg_addr);
-  uint8_t write_multiple(uint8_t* buffer, uint8_t reg_addr, uint8_t len);
+  uint8_t read_byte(uint8_t* buffer, uint8_t reg_addr);
+  uint8_t read_uint16(uint16_t* buffer, uint8_t reg_start_addr);
+  uint8_t read_bytes(uint8_t* buffer, uint8_t start_reg_addr, uint8_t len);
+  uint8_t write_byte(uint8_t data, uint8_t start_reg_addr);
+  uint8_t write_bytes(uint8_t* buffer, uint8_t reg_addr, uint8_t len);
  
 };
 
