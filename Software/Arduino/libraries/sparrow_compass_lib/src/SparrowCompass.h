@@ -7,17 +7,22 @@
 #include "Streaming.h"
 #include "sc_motor.h"
 #include "sc_magnetometer.h"
+#include "sc_magnetometer_alt.h"
 
 
 // boot flag value for entering bootloader mode
 #define DFU_BOOT_FLAG 0xDEADBEEF
 
-// enabled device modules
+// enabled device modules (comment unused)
 //#define ENABLE_MOTOR
-#define ENABLE_GYROSCOPE
-#define ENABLE_MAGNETOMETER
-#define ENABLE_ACCELEROMETER
-#define ENABLE_GPS
+//#define ENABLE_GYROSCOPE
+#define ENABLE_GYROSCOPE_ALT
+//#define ENABLE_MAGNETOMETER
+#define ENABLE_MAGNETOMETER_ALT
+//#define ENABLE_ACCELEROMETER
+#define ENABLE_ACCELEROMETER_ALT
+//#define ENABLE_GPS
+#define ENABLE_GPS_ALT
 
 // I2C addresses of specific modules
 #define I2C_ADR_GYROSCOPE 0x6B
@@ -26,7 +31,7 @@
 #define I2C_ADR_GPS 0x42
 #define I2C_ADR_GPS_ALT 0x3A
 #define I2C_ADR_ACCELEROMETER_ALT 0x6A
-#define I2C_ADR_GRYOSCOPE_ALT 0x6A
+#define I2C_ADR_GYROSCOPE_ALT 0x6A
 #define I2C_ADR_MAGNETOMETER_ALT 0x1C
 
 // hardware pinout
@@ -68,7 +73,7 @@ extern "C" {
 
 // global pointer
 extern SC_Motor *motor;
-extern SC_Magnetometer *magnetometer;
+extern SC_Magnetometer_alternative *magnetometer;
 
 class Orientation{
   public:

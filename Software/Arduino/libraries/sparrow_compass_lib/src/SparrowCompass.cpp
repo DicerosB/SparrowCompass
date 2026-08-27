@@ -2,7 +2,7 @@
 
 // global module pointer definitions
  SC_Motor *motor = nullptr;
- SC_Magnetometer *magnetometer = nullptr;
+ SC_Magnetometer_alternative *magnetometer = nullptr;
 
 SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
   :
@@ -57,7 +57,6 @@ void SparrowCompass::work(){
 
   // blink interval
   if (loop_time - blink_interval_timer > BLINK_INTERVAL){
-
     digitalWrite(DEBUG_LED_Pin, !digitalRead(DEBUG_LED_Pin));
 
     blink_interval_timer = millis();
@@ -66,37 +65,43 @@ void SparrowCompass::work(){
 }
 
 void SparrowCompass::init_modules(){
-  if(mot_module){
-    #ifdef VERBOSE_OUTPUT
-    *usb << "Initialising Motor.\n";
-    #endif
-    motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, MOT_SENS_B_Pin, usb);
-    *usb << "Initialised Motor.\n";
-  }else{
-    // ensure nEnabe is high!
-    pinMode(MOT_nEnable_Pin, INPUT_PULLUP);
-  }
-  if(mag_module){
-    #ifdef VERBOSE_OUTPUT
-    *usb << "Initialising Magnetometer.\n";
-    #endif
-    magnetometer = new SC_Magnetometer(i2c, I2C_ADR_MAGNETOMETER);
-    magnetometer->init();
-    *usb << "Initialised Magnetometer.\n";
-  }
+  #ifdef ENABLE_MOTOR
+    if(mot_module){
+      pinMode(MOT_nEnable_Pin, OUTPUT);
+      digitalWrite(MOT_nEnable_Pin, HIGH);
+      motor = new SC_Motor(MOT_nEnable_Pin, MOT_STEP_Pin, MOT_DIR_Pin, MOT_SENS_A_Pin, MOT_SENS_B_Pin, usb);
+      #ifdef VERBOSE_OUTPUT
+        *usb << "Initialised Motor.\n";
+      #endif
+  #endif
+  #ifdef ENABLE_MAGNETOMETER
+    if(mag_module){
+      magnetometer = new SC_Magnetometer(i2c, I2C_ADR_MAGNETOMETER);
+      magnetometer->init();
+      #ifdef VERBOSE_OUTPUT
+        *usb << "Initialised Magnetometer.\n";
+      #endif
+    }
+  #endif 
+  #ifdef ENABLE_MAGNETOMETER_ALT
+    if(mag_module){
+      magnetometer = new SC_Magnetometer_alternative(i2c, I2C_ADR_MAGNETOMETER_ALT);
+      magnetometer->init();
+      #ifdef VERBOSE_OUTPUT
+        *usb << "Initialised Magnetometer (alt).\n";
+      #endif
+    }
+  #endif
 
 }
 
 void SparrowCompass::hw_init(){
   pinMode(DEBUG_LED_Pin, OUTPUT);
   pinMode(GPS_nReset_Pin, OUTPUT);
+  pinMode(MOT_nEnable_Pin, INPUT_PULLUP);
 
   digitalWrite(GPS_nReset_Pin, HIGH);
-  digitalWrite(MOT_nEnable_Pin, HIGH);
 
-  //debug
-  pinMode(MOT_STEP_Pin, OUTPUT);
-  pinMode(MOT_nEnable_Pin, OUTPUT);
 }
 
 void SparrowCompass::setup_usb(){
@@ -178,35 +183,31 @@ void SparrowCompass::scan_for_modules(){
     if (!error) {
       switch(address){
         case I2C_ADR_GYROSCOPE:
-          #ifdef ENABLE_GYROSCOPE
-            gyr_module = 1;
-            #ifdef VERBOSE_OUTPUT
-            *usb << "Gyroscope found.\n";
-            #endif
+        //case I2C_ADR_GYROSCOPE_ALT:
+          gyr_module = 1;
+          #ifdef VERBOSE_OUTPUT
+          *usb << "Gyroscope found.\n";
           #endif
         break;
         case I2C_ADR_ACCELEROMETER:
-          #ifdef ENABLE_ACCELEROMETER
-            acc_module = 1;
-            #ifdef VERBOSE_OUTPUT
-            *usb << "Accelerometer found.\n";
-            #endif
+        case I2C_ADR_ACCELEROMETER_ALT:
+          acc_module = 1;
+          #ifdef VERBOSE_OUTPUT
+          *usb << "Accelerometer found.\n";
           #endif
         break;
         case I2C_ADR_MAGNETOMETER:
-          #ifdef ENABLE_MAGNETOMETER
-            mag_module = 1;
-            #ifdef VERBOSE_OUTPUT
-            *usb << "Magnetometer found.\n";
-            #endif
+        case I2C_ADR_MAGNETOMETER_ALT:
+          mag_module = 1;
+          #ifdef VERBOSE_OUTPUT
+          *usb << "Magnetometer found.\n";
           #endif
         break;
         case I2C_ADR_GPS:
-          #ifdef ENABLE_GPS
-            gps_module = 1;
-            #ifdef VERBOSE_OUTPUT
-            *usb << "GPS found.\n";
-            #endif
+        case I2C_ADR_GPS_ALT:
+          gps_module = 1;
+          #ifdef VERBOSE_OUTPUT
+          *usb << "GPS found.\n";
           #endif
         break;
         default:

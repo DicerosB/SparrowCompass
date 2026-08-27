@@ -29,9 +29,9 @@ Paste the content into the "variant" folder.
 Last step is to add the menu entries to `boards.txt`.\
 For that, just copy the content of the file `boards_entry.txt` (located in the previously pasted folder) at the top of the `boards.txt`
 
-In order to make the changes visible, the Arduino IDE cache must be cleared. This can be archeived by deleting `C:\\Users\<USERNAME>\Appdata\Roaming\arduino-ide\LocalStorage` and restarting the IDE.
+After restarting the IDE, a "Sparrow Compass" option should appear under Tools -> Board -> STM32 MCU based boards
 
-Now a "Sparrow Compass" option should appear under Tools -> Board -> STM32 MCU based boards
+If there is no such option, the Arduino IDE cache must be cleared. This can be archeived by deleting `C:\\Users\<USERNAME>\Appdata\Roaming\arduino-ide\LocalStorage` and restarting the IDE.
 
 ## Installing the Sparrow Compass Library
 
