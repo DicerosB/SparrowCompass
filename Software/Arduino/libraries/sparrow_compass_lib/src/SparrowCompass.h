@@ -8,6 +8,7 @@
 #include "sc_motor.h"
 #include "sc_magnetometer.h"
 #include "sc_magnetometer_alt.h"
+#include "sc_accelerometer_alt.h"
 
 
 // boot flag value for entering bootloader mode

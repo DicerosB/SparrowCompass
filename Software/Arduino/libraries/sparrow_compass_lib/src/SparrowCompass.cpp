@@ -3,6 +3,7 @@
 // global module pointer definitions
  SC_Motor *motor = nullptr;
  SC_Magnetometer_alternative *magnetometer = nullptr;
+ SC_Accelerometer_alternative *accelerometer = nullptr;
 
 SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
   :
@@ -28,8 +29,16 @@ void SparrowCompass::begin(){
 
   // module test
   if(mag_module){
-    *usb << "magnetometer ID:";
-    *usb << magnetometer->get_id() << "\n";
+    #ifdef VERBOSE_OUTPUT
+      *usb << "magnetometer ID:";
+      *usb << magnetometer->get_id() << "\n";
+    #endif
+  }
+  if(acc_module){
+    #ifdef VERBOSE_OUTPUT
+      *usb << "accelerometer ID:";
+      *usb << accelerometer->get_id() << "\n";
+    #endif
   }
   if(mot_module){
     //motor->synchronize();
@@ -48,6 +57,7 @@ void SparrowCompass::work(){
 
     handle_usb();
     magnetometer->get_output(orientation.mag);
+    accelerometer->get_output(orientation.acc, orientation.gyr);
     orientation.plot(usb, plot_mode);
 
     main_interval_timer = millis();
@@ -88,6 +98,15 @@ void SparrowCompass::init_modules(){
       magnetometer->init();
       #ifdef VERBOSE_OUTPUT
         *usb << "Initialised Magnetometer (alt).\n";
+      #endif
+    }
+  #endif
+  #ifdef ENABLE_ACCELEROMETER_ALT
+    if(acc_module){
+      accelerometer = new SC_Accelerometer_alternative(i2c, I2C_ADR_ACCELEROMETER_ALT);
+      accelerometer->init();
+      #ifdef VERBOSE_OUTPUT
+        *usb << "Initialised Accelerometer (alt).\n";
       #endif
     }
   #endif
