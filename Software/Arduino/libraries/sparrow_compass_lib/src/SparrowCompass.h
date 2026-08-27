@@ -55,7 +55,7 @@
 #define BLINK_INTERVAL 1000 // in ms
 
 // project metadata
-#define PROJECT_VERSION "0.0.1"
+#define PROJECT_VERSION "0.0.2"
 #define PROJECT_AUTHOR "Petzoldt"
 
 extern int _bflag;
@@ -77,7 +77,7 @@ extern SC_Magnetometer_alternative *magnetometer;
 
 class Orientation{
   public:
-  void plot(USBSerial* p_usb);
+  void plot(USBSerial* p_usb, uint8_t mode);
   Orientation();
   // raw sensor data
   int16_t mag[3]; 
@@ -95,7 +95,8 @@ class SparrowCompass{
 
   private:
   bool acc_module, gyr_module, mot_module, mag_module, gps_module;
-  bool plotting, automove;
+  bool automove;
+  uint8_t plot_mode; // 0bxxxxxgam 
   uint32_t loopcounter, blink_interval_timer, main_interval_timer;
   Orientation orientation;
 

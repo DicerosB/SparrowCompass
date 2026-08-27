@@ -14,7 +14,7 @@ SparrowCompass::SparrowCompass(TwoWire* p_i2c, USBSerial* p_usb)
   mot_module(0),
   mag_module(0),
   gps_module(0),
-  plotting(0),
+  plot_mode(0),
   automove(0)
 {}
 
@@ -48,9 +48,7 @@ void SparrowCompass::work(){
 
     handle_usb();
     magnetometer->get_output(orientation.mag);
-    if(plotting){
-      orientation.plot(usb);
-    }
+    orientation.plot(usb, plot_mode);
 
     main_interval_timer = millis();
   }
@@ -62,6 +60,7 @@ void SparrowCompass::work(){
     blink_interval_timer = millis();
   }
   loop_duration = millis() - loop_time;
+  loopcounter++;
 }
 
 void SparrowCompass::init_modules(){
@@ -140,7 +139,7 @@ void SparrowCompass::handle_usb(){
       << "\t\t  H: heading bytes\n" \
       << "stp\t\t| stop needle\n" \
       << "resume\t\t| continue auto needle movement\n" \
-      << "plot\t\t| toggle plot mode\n" \
+      << "plot m/a/g/all\t\t| toggle data plotting\n" \
       << "----------------------------------\n\n";
     }
     else if(buffer.startsWith("mv ") && buffer.length() == 13){
@@ -154,8 +153,33 @@ void SparrowCompass::handle_usb(){
       motor->stop();
       *usb << "stopped motor\n";
     }
-    else if(buffer == "plot"){
-      plotting = !plotting;
+    else if(buffer == "plot m"){
+      if(plot_mode & 0x01){
+        plot_mode &= 0xFE; // set bit 0 to 0
+      }else{
+        plot_mode |= 0x01; // set bit 0 to 1
+      }
+    }
+    else if(buffer == "plot a"){
+      if(plot_mode & 0x02){
+        plot_mode &= 0xFD; // set bit 1 to 0
+      }else{
+        plot_mode |= 0x02; // set bit 1 to 1
+      }
+    }
+    else if(buffer == "plot g"){
+      if(plot_mode & 0x04){
+        plot_mode &= 0xFB; // set bit 1 to 0
+      }else{
+        plot_mode |= 0x04; // set bit 1 to 1
+      }
+    }
+    else if(buffer == "plot all"){
+      if(plot_mode){
+        plot_mode = 0; // set all bits to 0
+      }else{
+        plot_mode = 0xFF; // set all bits to 1
+      }
     }
     else{ // echo
       *usb << buffer << "\n";
@@ -236,15 +260,22 @@ void SparrowCompass::switch_to_bootloader(){
 Orientation::Orientation(){
 }
 
-void Orientation::plot(USBSerial* p_usb){
-  uint8_t graph_counter = 0;
-  *p_usb << "MAG_X:" << mag[0] << ", ";
-  *p_usb << "MAG_Y:" << mag[1] << ", ";
-  *p_usb << "MAG_Z:" << mag[2] << ", ";
-  *p_usb << "ACC_X:" << acc[0] << ", ";
-  *p_usb << "ACC_Y:" << acc[1] << ", ";
-  *p_usb << "ACC_Z:" << acc[2] << ", ";
-  *p_usb << "GYR_X:" << gyr[0] << ", ";
-  *p_usb << "GYR_Y:" << gyr[1] << ", ";
-  *p_usb << "GYR_Z:" << gyr[2]<< "\n";
+void Orientation::plot(USBSerial* p_usb, uint8_t mode){
+  if(!mode)return;
+  if(mode & 0x01){
+    *p_usb << "MAG_X:" << mag[0] << ", ";
+    *p_usb << "MAG_Y:" << mag[1] << ", ";
+    *p_usb << "MAG_Z:" << mag[2] << ", ";
+  }
+  if(mode & 0x02){
+    *p_usb << "ACC_X:" << acc[0] << ", ";
+    *p_usb << "ACC_Y:" << acc[1] << ", ";
+    *p_usb << "ACC_Z:" << acc[2] << ", ";
+  }
+  if(mode & 0x04){
+    *p_usb << "GYR_X:" << gyr[0] << ", ";
+    *p_usb << "GYR_Y:" << gyr[1] << ", ";
+    *p_usb << "GYR_Z:" << gyr[2] << ", ";
+  }
+  *p_usb << "\n";
 }

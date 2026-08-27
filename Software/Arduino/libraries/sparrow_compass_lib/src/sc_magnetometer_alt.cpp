@@ -9,7 +9,7 @@ uint8_t SC_Magnetometer_alternative::init(){
     // Configure Magnetometer
     uint8_t config_data[] ={
         0b11010000, // CFG_REG1_M : temp compensation, 50 Hz continuous mode
-        0b00100000, // CFG_REG2_M : +-8 gauss FS
+        0b00000000, // CFG_REG2_M : +-4 gauss FS
         0b00000000, // CFG_REG3_M 
         0b00001000, // CFG_REG4_M 
         0b01000000, // CFG_REG5_M 
